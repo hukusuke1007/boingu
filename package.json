@@ -1,0 +1,36 @@
+{
+  "name": "nuxt-ts-plain",
+  "version": "1.0.0",
+  "private": true,
+  "dependencies": {
+    "@nuxtjs/axios": "^5.0.0",
+    "@nuxtjs/dotenv": "^1.1.1",
+    "@nuxtjs/sitemap": "^0.1.1",
+    "@nuxtjs/vuetify": "^0.4.2",
+    "firebase": "^5.0.4",
+    "nuxt": "^1.3.0",
+    "nuxt-property-decorator": "^1.2.0",
+    "vue-beautiful-chat": "^1.0.0",
+    "vuetify": "^1.0.19",
+    "vuex-class": "^0.3.0",
+    "vuex-type-helper": "^1.2.0"
+  },
+  "scripts": {
+    "dev": "nuxt",
+    "build": "nuxt build",
+    "start": "nuxt start",
+    "dev-spa": "nuxt dev --spa",
+    "build-spa": "nuxt build --spa",
+    "start-spa": "nuxt start --spa",
+    "generate": "nuxt generate",
+    "build-gh": "DEPLOY_ENV=GH_PAGES nuxt build",
+    "generate-gh": "DEPLOY_ENV=GH_PAGES nuxt generate"
+  },
+  "devDependencies": {
+    "@types/node": "^9.4.6",
+    "stylus": "^0.54.5",
+    "stylus-loader": "^3.0.2",
+    "ts-loader": "^3.5.0",
+    "typescript": "^2.7.2"
+  }
+}
