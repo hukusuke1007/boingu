@@ -36,7 +36,7 @@ module.exports = {
       `http://${host}:${port}`
   },
   head: {
-    title: "AutoResponce Demo",
+    title: "ぼいんぐ Boingu",
     meta: [
       { charset: "utf-8" },
       {
@@ -121,7 +121,7 @@ module.exports = {
   axios: {},
   sitemap: {
     path: '/sitemap.xml',
-    hostname: 'https://hukusuke1007.github.io/nuxt-ts-plain/',
+    hostname: 'https://hukusuke1007.github.io/boingu/',
     generate: true,
     exclude: [
     ],

@@ -1,8 +1,7 @@
 import Vue from 'vue'
-import Vuex, { StoreOptions } from 'vuex'
+import Vuex from 'vuex'
 import { RootState } from './types'
-import { profile } from './profile/index'
-import { luis } from './luis/index'
+import { firebase } from './firebase/index'
 
 Vue.use(Vuex)
 
@@ -12,21 +11,8 @@ const createStore = () => {
       version: '1.0.0' // a simple property
     },
     modules: {
-      profile,
-      luis
+      firebase
     }    
   })
 }
 export default createStore
-/*
-const store: StoreOptions<RootState> = {
-    state: {
-        version: '1.0.0' // a simple property
-    },
-    modules: {
-        profile
-    }
-}
-
-export default new Vuex.Store<RootState>(store)
-*/

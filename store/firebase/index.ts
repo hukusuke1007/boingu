@@ -2,19 +2,19 @@ import { Module } from 'vuex'
 import { getters } from './getters'
 import { actions } from './actions'
 import { mutations } from './mutations'
-import { LuisState } from './types'
+import { FirebaseState } from './types'
 import { RootState } from '../types'
 
-export const state: LuisState = {
-    result: undefined,
-    isLoading: false,
-    error: false
+export const state: FirebaseState = {
+    user: undefined,
+    isLoad: false,
+    isError: false
 }
 
 const namespaced: boolean = true
 
-export const name = 'luis'
-export const luis: Module<LuisState, RootState> = {
+export const name = 'firebase'
+export const firebase: Module<FirebaseState, RootState> = {
     namespaced,
     state,
     getters,
