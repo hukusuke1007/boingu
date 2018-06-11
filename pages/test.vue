@@ -1,7 +1,11 @@
 <template>
-    <v-flex xs12 sm6 offset-sm3>
-      <TopLogin/>
-    </v-flex>
+  <section>
+  <div>
+      <v-flex>
+        <v-btn color="testColor" class="white--text" @click="tapBtn()">クリック</v-btn>
+      </v-flex>
+  </div>
+  </section>
 </template>
 
 <script lang="ts">
@@ -12,7 +16,7 @@ import {
 import { State, Getter, Action, namespace } from 'vuex-class'
 import * as firebase from '~/store/firebase'
 import nextPage from './nextPage.vue'
-import TopLogin from "~/components/TopLogin.vue"
+// import Card from "~/components/Card.vue"
 
 const FirebaseState = namespace(firebase.name, State)
 const FirebaseAction = namespace(firebase.name, Action)
@@ -20,7 +24,7 @@ const FirebaseGetter = namespace(firebase.name, Getter)
 
 @Component({
   components: {
-    TopLogin
+//    Card
   },
   watch: {
     isLoadFirebase (newVal: boolean, oldVal: boolean) {
@@ -29,6 +33,8 @@ const FirebaseGetter = namespace(firebase.name, Getter)
   }
 })
 export default class index extends Vue {
+  // @State people
+
   // ■ Vuex
   @FirebaseState('isLoad') isLoadFirebase
   @FirebaseAction('doSet') doSet: any

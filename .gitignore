@@ -12,3 +12,6 @@ dist
 
 # env 
 .env
+
+# firebase
+firestore_design.txt

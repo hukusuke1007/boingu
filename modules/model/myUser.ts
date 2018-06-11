@@ -1,6 +1,7 @@
 import { User, CryptoInfo } from '~/store/firebase/types'
 export class myUser implements User {
     uid: string = ''
+    id: string = ''
     name: string = 'guest'
     email: string = ''
     isDelete: boolean = false

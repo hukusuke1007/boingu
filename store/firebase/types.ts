@@ -2,6 +2,7 @@ import { cryptoType } from '~/modules/define/enum'
 
 export interface User {
     uid: string
+    id: string
     name: string
     email: string
     isDelete: boolean

@@ -33,7 +33,6 @@ import { State } from "vuex-class"
   }
 })
 export default class nextPage extends Vue {
-  // @State people
   // function.
   created() {
     console.log('created before DOM')

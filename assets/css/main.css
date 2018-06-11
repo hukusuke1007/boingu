@@ -1,7 +1,33 @@
 .container {
   background-color: #2a272e;
 }
-
-button.testColor {
-  background: #5FACEF;
+.w-break {
+  word-break: break-all;
+}
+.main-boingu {
+  background-color: #4A33F6;
+}
+.bg-boingu {
+  background-color: #FAFAFB;
+}
+.white-boingu {
+  color: #FAFAFB;
+}
+.blue-boingu {
+  color: #4A33F6;
+}
+.purple-boingu {
+  color: #23218B;
+}
+.grey-boingu {
+  color: #b9b4ca;
+}
+.black-boingu {
+  color: #180836;
+}
+.red-boingu {
+  color: #ff3827;
+}
+.yellow-boingu {
+  color: #d89263;
 }
