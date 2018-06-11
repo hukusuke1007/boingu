@@ -32,7 +32,7 @@
           </v-btn>
           -->
           <v-flex xs12 py-3 text-xs-center class="grey-boingu">
-            &copy;2018. <strong>Shohei Nakagawa</strong>
+            &copy;2018. <strong>ぼいんぐ Boingu</strong>
           </v-flex>
         </v-layout>
       </v-footer>
