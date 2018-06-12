@@ -25,9 +25,6 @@ const FirebaseAction = namespace(firebaseStore.name, Action)
   components: {
   },
   watch: {
-    user (newVal, oldVal) {
-      console.log('watch', newVal, oldVal)
-    }
   }
 })
 export default class TopLogin extends Vue {

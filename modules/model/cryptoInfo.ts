@@ -1,3 +1,4 @@
+/*
 import { CryptoInfo } from '~/store/firebase/types'
 import { cryptoType } from '~/modules/define/enum'
 
@@ -6,3 +7,4 @@ export class cryptoInfo implements CryptoInfo {
     type: cryptoType = cryptoType.nem
     addr: string = ''
 }
+*/

@@ -1,5 +1,6 @@
 import { MutationTree } from 'vuex'
-import { FirebaseState, User } from './types'
+import { FirebaseState } from './types'
+import User from '~/modules/model/firebase/firebaseUserModel'
 
 export const mutations: MutationTree<FirebaseState> = {
     setUser(state, payload: User) {

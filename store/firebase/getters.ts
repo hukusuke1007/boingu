@@ -1,6 +1,7 @@
 import { GetterTree } from 'vuex'
-import { FirebaseState, User } from './types'
+import { FirebaseState } from './types'
 import { RootState } from '../types'
+import User from '~/modules/model/firebase/firebaseUserModel'
 
 export const getters: GetterTree<FirebaseState, RootState> = {
     user(state): User {

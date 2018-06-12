@@ -1,3 +1,4 @@
+/*
 import { User, CryptoInfo } from '~/store/firebase/types'
 export class myUser implements User {
     uid: string = ''
@@ -9,3 +10,4 @@ export class myUser implements User {
     updateDate: string = ''
     cryptoInfo: CryptoInfo = undefined
 }
+*/
