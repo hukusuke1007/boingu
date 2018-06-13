@@ -7,6 +7,8 @@ import { RootState } from '../types'
 
 export const state: FirebaseState = {
     user: undefined,
+    wallet: undefined,
+    tryList: undefined,
     isLoad: false,
     isError: false
 }

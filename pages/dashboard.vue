@@ -1,8 +1,12 @@
 <template>
     <v-flex>
       ダッシュボード
-      <Account />
-      <CreateBestDay />
+      <div class="body">
+        <Account />
+      </div>
+      <div class="body">
+        <CreateBestDay />
+      </div>
     </v-flex>
 </template>
 
@@ -44,4 +48,7 @@ export default class index extends Vue {
 }
 </script>
 <style scoped>
+.body {
+  margin: 8px 0px 8px 0px;
+}
 </style>

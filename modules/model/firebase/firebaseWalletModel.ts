@@ -1,7 +1,6 @@
 import baseModel from './firebaseBaseModel'
 
 export default class walletModel extends baseModel {
-
     type: string
     publicKey: string
     privateKey: string

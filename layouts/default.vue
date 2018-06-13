@@ -65,16 +65,16 @@ const FirebaseModule = namespace(firebaseStore.name)
 export default class extends Vue {
   @FirebaseModule.State isLoadFirebase
   @FirebaseModule.State user
-  @FirebaseModule.Action doGetMyAccount
+  @FirebaseModule.Action doMyAccount
   created () {
-    this.doGetMyAccount()
+    this.doMyAccount()
   }
 }
 </script>
 
 <style>
 #app {
-  font-family: 'Hiragino Sans', Helvetica, Arial, sans-serif;
+  font-family: 'Open Sans', 'Hiragino Sans', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
