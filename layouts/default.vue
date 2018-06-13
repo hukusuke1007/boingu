@@ -39,6 +39,38 @@
      </v-app>
   </div>
 </template>
+<script lang="ts">
+import {
+  Component,
+  Vue
+} from 'nuxt-property-decorator'
+import { State, Action, namespace } from 'vuex-class'
+import * as firebaseStore from '~/store/firebase'
+
+const FirebaseModule = namespace(firebaseStore.name)
+
+@Component({
+  watch: {
+    isLoadFirebase (newVal: boolean, oldVal: boolean) {
+      console.log('isLoadFirebase', newVal, oldVal)
+    },
+    user (newVal, oldVal) {
+      console.log('default watch', newVal, oldVal)
+      if (newVal === undefined) {
+        this.$router.push( {name: 'index'} )
+      }
+    }
+  }
+})
+export default class extends Vue {
+  @FirebaseModule.State isLoadFirebase
+  @FirebaseModule.State user
+  @FirebaseModule.Action doGetMyAccount
+  created () {
+    this.doGetMyAccount()
+  }
+}
+</script>
 
 <style>
 #app {

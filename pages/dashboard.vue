@@ -1,6 +1,8 @@
 <template>
-    <v-flex xs12 sm6 offset-sm3>
+    <v-flex>
       ダッシュボード
+      <Account />
+      <CreateBestDay />
     </v-flex>
 </template>
 
@@ -9,15 +11,17 @@ import {
   Component,
   Vue
 } from 'nuxt-property-decorator'
-import { State, Getter, Action, namespace } from 'vuex-class'
+import { State, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
+import Account from '~/components/Account.vue'
+import CreateBestDay from '~/components/CreateBestDay.vue'
 
-const FirebaseState = namespace(firebaseStore.name, State)
-const FirebaseAction = namespace(firebaseStore.name, Action)
-const FirebaseGetter = namespace(firebaseStore.name, Getter)
+const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
   components: {
+    Account,
+    CreateBestDay
   },
   watch: {
     isLoadFirebase (newVal: boolean, oldVal: boolean) {
@@ -27,8 +31,8 @@ const FirebaseGetter = namespace(firebaseStore.name, Getter)
 })
 export default class index extends Vue {
   // ■ Vuex
-  @FirebaseState('isLoad') isLoadFirebase
-  // @FirebaseGetter isLoad
+  @FirebaseModule.State('isLoad') isLoadFirebase
+  // @FirebaseState('isLoad') isLoadFirebase
 
   // ■ Method.
   created () {

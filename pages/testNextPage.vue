@@ -32,7 +32,7 @@ import { State } from "vuex-class"
     }
   }
 })
-export default class nextPage extends Vue {
+export default class testNextPage extends Vue {
   // function.
   created() {
     console.log('created before DOM')

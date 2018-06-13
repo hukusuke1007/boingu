@@ -9,24 +9,19 @@ import {
   Component,
   Vue
 } from 'nuxt-property-decorator'
-import { State, Getter, Action, namespace } from 'vuex-class'
+import { State, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
 import TopLogin from "~/components/TopLogin.vue"
 
-const FirebaseState = namespace(firebaseStore.name, State)
-const FirebaseAction = namespace(firebaseStore.name, Action)
-const FirebaseGetter = namespace(firebaseStore.name, Getter)
+const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
   components: {
     TopLogin
   },
   watch: {
-    isLoadFirebase (newVal: boolean, oldVal: boolean) {
-      console.log('isLoadFirebase', newVal, oldVal)
-    },
     user (newVal, oldVal) {
-      console.log('watch', newVal, oldVal)
+      console.log('index watch', newVal, oldVal)
       if (newVal !== undefined) {
         this.$router.push( {name: 'dashboard'} )
       }
@@ -35,15 +30,11 @@ const FirebaseGetter = namespace(firebaseStore.name, Getter)
 })
 export default class index extends Vue {
   // ■ Vuex
-  @FirebaseState('isLoad') isLoadFirebase
-  @FirebaseState('user') user
-  @FirebaseAction('doGetMyAccount') doGetMyAccount
-  // @FirebaseGetter isLoad
+  @FirebaseModule.State user
 
   // ■ Method.
   created () {
     console.log('created before DOM')
-    this.doGetMyAccount()
   }
   mounted () {
     console.log('mounted after DOM')

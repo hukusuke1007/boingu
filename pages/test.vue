@@ -18,10 +18,6 @@ import * as firebase from '~/store/firebase'
 import nextPage from './nextPage.vue'
 // import Card from "~/components/Card.vue"
 
-const FirebaseState = namespace(firebase.name, State)
-const FirebaseAction = namespace(firebase.name, Action)
-const FirebaseGetter = namespace(firebase.name, Getter)
-
 @Component({
   components: {
 //    Card
@@ -33,12 +29,6 @@ const FirebaseGetter = namespace(firebase.name, Getter)
   }
 })
 export default class index extends Vue {
-  // @State people
-
-  // ■ Vuex
-  @FirebaseState('isLoad') isLoadFirebase
-  @FirebaseAction('doSet') doSet: any
-  // @FirebaseGetter isLoad
 
   // ■ Method.
   created () {
@@ -49,9 +39,8 @@ export default class index extends Vue {
   }
   tapBtn () {
     console.log('tap')
-    this.doSet('aaaa')
-    // this.$router.push( {name: 'nextPage'} )
-    // this.$router.push( {name: 'nextPage', params: {id: 1, message: 'message'}} )
+    // this.$router.push( {name: 'testNextPage'} )
+    // this.$router.push( {name: 'testNextPage', params: {id: 1, message: 'message'}} )
   }
 }
 </script>
