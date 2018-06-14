@@ -5,11 +5,11 @@ export default class utility {
     }
 
     public getTryDefaultList(): Array<Try> {
-        let wakeup: Try = new Try('', new Date, new Date, '起床', 'blue')
-        let eat: Try = new Try('', new Date, new Date, '食事', 'green')
+        let sleep: Try = new Try('', new Date, new Date, '睡眠', 'blue')
+        let eat: Try = new Try('', new Date, new Date, '食事', 'orange')
+        let work: Try = new Try('', new Date, new Date, '仕事', 'green')
         let hobby: Try = new Try('', new Date, new Date, '趣味', 'purple')
-        let sleep: Try = new Try('', new Date, new Date, '就寝', 'orange')
-        let list:Array<Try> = [wakeup, eat, hobby, sleep]
+        let list:Array<Try> = [sleep, eat, work, hobby]
         return list
     }
 }
