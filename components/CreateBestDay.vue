@@ -7,48 +7,32 @@
       <a href="#" class="btn red" @click="tryCreate()">+</a>
   </v-flex>
   <v-flex class="tableBody">
+    <div class="nowDate">
+      {{ nowDateString }}
+    </div>
     <table class="responstable">
       <tr>
-        <th>Main driver</th>
-        <th>First name</th>
-        <th>Surname</th>
-        <th>Date of birth</th>
-        <th>Relationship</th>
+        <th>時間</th><th>内容</th><th>コメント</th><th></th>
       </tr>
-      
-      <tr>
-        <td data-th="Main driver"><input type="radio"/></td>
-        <td data-th="First name">Steve</td>
-        <td data-th="Surname">Foo</td>
-        <td data-th="Date of birth">01/01/1978</td>
-        <td data-th="Relationship">Policyholder</td>
-      </tr>
-      
-      <tr>
-        <td data-th="Main driver"><input type="radio"/></td>
-        <td data-th="First name">Steffie</td>
-        <td data-th="Surname">Foo</td>
-        <td data-th="Date of birth">01/01/1978</td>
-        <td data-th="Relationship">Spouse</td>
-      </tr>
-      
-      <tr>
-        <td data-th="Main driver"><input type="radio"/></td>
-        <td data-th="First name">Stan</td>
-        <td data-th="Surname">Foo</td>
-        <td data-th="Date of birth">01/01/1994</td>
-        <td data-th="Relationship">Son</td>
-      </tr>
-      
-      <tr>
-        <td data-th="Main driver"><input type="radio"/></td>
-        <td data-th="First name">Stella</td>
-        <td data-th="Surname">Foo</td>
-        <td data-th="Date of birth">01/01/1992</td>
-        <td data-th="Relationship">Daughter</td>
-      </tr>
-      
+        <tr v-for="(item, key, index) in timeDataList" :key="index">
+          <td data-th="時間">{{ item.time }}</td>
+          <td data-th="内容">{{ item.content }}</td>
+          <td data-th="コメント">{{ item.comment }}</td>
+          <td data-th="削除"><a href="#" class="deleteBtn" @click="tapDelete(key)"><v-icon color="grey">delete</v-icon></a>
+          </td>
+        </tr>
     </table>
+    <div class="descriptionBody" v-if="timeDataList.length===0">
+      今日もお疲れ様でした！<br>今日の自分を記録してみませんか？
+    </div>
+  </v-flex>
+  <v-flex class="timeChartBody">
+    <TimeDataChart 
+       v-bind:chartData="chartData"
+       v-bind:options="chartOptions"
+       v-bind:width="400"
+       v-bind:height="200"
+        />
   </v-flex>
 </div>
 </template>
@@ -59,13 +43,22 @@ import {
   Vue
 } from "nuxt-property-decorator"
 import { State, Action, namespace } from 'vuex-class'
+import TimeDataChart from '~/components/TimeDataChart.vue'
+import utility from '~/modules/utils/utility'
+
 import * as firebaseStore from '~/store/firebase'
+import User from '~/modules/model/firebase/firebaseUserModel'
 import Try from '~/modules/model/firebase/firebaseTryModel'
+import TimeData from '~/modules/model/firebase/firebaseTimeDataModel'
+import { Observer } from "firebase";
 const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
   components: {
+    TimeDataChart
   },
+  data: () => ({
+  }),
   watch: {
     tryList (newVal:Array<Try>, oldVal:Array<Try>) {
       console.log('tryList', newVal, oldVal)
@@ -75,24 +68,48 @@ const FirebaseModule = namespace(firebaseStore.name)
 export default class CreateBestDay extends Vue {
   // @Prop()
   @FirebaseModule.State tryList:Array<Try>
+  @FirebaseModule.State user:User
 
-  title: string = 'Boingu'
+  nowDateString: string = ''
+  timeDataList: Array<TimeData> = []
+  chartData: Object = {}
+  chartOptions: Object = {}
 
   created () {
-    if (this.tryList !== undefined) {
-    }
   }
   mounted () {
+    this.nowDateString = new utility().getDateString(new Date)
+    this.chartUpdate()
   }
   tryRegist (item:Try) {
     console.log(item.content)
+    let data = new TimeData(this.user.uid, new Date, new Date, 10, item.content, 'comment test', item.color)
+    this.timeDataList.push(data)
   }
-  tryCreate (){
-
+  tryCreate () {
+  }
+  chartUpdate () {
+    this.chartData = {
+      labels: ['January', 'February'],
+      datasets: [
+        {
+          label: 'GitHub Commits',
+          backgroundColor: '#f87979',
+          data: [40, 20]
+        }
+      ]
+    }
+    console.log('chartData', this.chartData)
+  }
+  tapDelete (index) {
+    let deleteData = this.timeDataList[index]
+    this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
   }
 }
 </script>
 <style scoped lang="scss">
+
+$body-margin: 0px 10px 0px 10px;;
 
 // ■ ボタン.
 .buttonBody {
@@ -164,7 +181,22 @@ export default class CreateBestDay extends Vue {
   background-color: #FF983C;
 }
 
+// ■ nowDate
+.nowDate{
+  border-radius: 5px;
+  background: rgba(10, 6, 243, 0.2);
+  color: #fff;
+  font-family: "Open Sans", sas-serif;
+  font-size: 1.8em;
+  padding: 0.1em;
+  text-align: center;
+}
+
 // ■ table.
+.tableBody {
+  margin: $body-margin;
+}
+
 $table-breakpoint: 480px;
 $table-background-color: #FFF;
 $table-text-color: #024457;
@@ -179,9 +211,6 @@ $table-header-text-color: #FFF;
 $table-header-border: 1px solid #FFF;
 
 // The Responstable mixin
-.tableBody {
-  margin: 0px 10px 0px 10px;
-}
 @mixin responstable(
   $breakpoint: $table-breakpoint,
   $background-color: $table-background-color,
@@ -249,13 +278,15 @@ $table-header-border: 1px solid #FFF;
         &:first-child {
           text-align: center;
         }
+        &:last-child {
+          text-align: center;
+        }
       }
     }  
   }
 }
 
 // Include the mixin (with extra options as overrides)
-
 @include responstable(
   $border-radius: $table-border-radius,
   $highlight-color: $table-highlight-color,
@@ -263,19 +294,29 @@ $table-header-border: 1px solid #FFF;
   $header-text-color: $table-header-text-color,
   $header-border: $table-header-border);
 
-// General styles
-
-body {
-  padding: 0 2em;
-  font-family: Arial, sans-serif;
-  color: #024457;
-  background: #f2f2f2;
+.deleteBtn {
+  text-decoration: none;
+  text-transform: none;
+  position: relative;
+  display: inline-block;
 }
 
-h1 {
-  font-family: Verdana;
-  font-weight: normal;
-  color: #024457;
-  span { color: #167F92;}
+.deleteBtn:active {
+  transform: translate(0px, 5px);
+  -webkit-transform: translate(0px, 5px);
 }
+// ■ description
+.descriptionBody {
+  margin: $body-margin;
+  font-family: "Open Sans", sas-serif;
+  font-size: 1.8em;
+  padding: 0.3em;
+  text-align: center;
+}
+
+// ■ TimeChart.
+.timeChartBody {
+  margin: $body-margin;
+}
+
 </style>
