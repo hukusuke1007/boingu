@@ -23,15 +23,13 @@
         </tr>
     </table>
     <div class="descriptionBody" v-if="timeDataList.length===0">
-      今日もお疲れ様でした！<br>今日の自分を記録してみませんか？
+      <!-- 今日もお疲れ様でした！<br>今日の自分を記録してみませんか？ -->
     </div>
   </v-flex>
   <v-flex class="timeChartBody">
     <TimeDataChart 
        v-bind:chartData="chartData"
        v-bind:options="chartOptions"
-       v-bind:width="400"
-       v-bind:height="200"
         />
   </v-flex>
 </div>
@@ -90,14 +88,68 @@ export default class CreateBestDay extends Vue {
   }
   chartUpdate () {
     this.chartData = {
-      labels: ['January', 'February'],
+      labels: ["睡眠", "食事", "仕事", "趣味", "仕事", "趣味"],
       datasets: [
         {
-          label: 'GitHub Commits',
-          backgroundColor: '#f87979',
-          data: [40, 20]
+            label: '# of Votes',
+            data: [2, 4, 6, 2, 1, 2],
+            backgroundColor: [
+                'rgba(255, 99, 132, 0.2)',
+                'rgba(54, 162, 235, 0.2)',
+                'rgba(255, 206, 86, 0.2)',
+                'rgba(75, 192, 192, 0.2)',
+                'rgba(153, 102, 255, 0.2)',
+                'rgba(255, 159, 64, 0.2)'
+            ],
+            borderColor: [
+                'rgba(255,99,132,1)',
+                'rgba(54, 162, 235, 1)',
+                'rgba(255, 206, 86, 1)',
+                'rgba(75, 192, 192, 1)',
+                'rgba(153, 102, 255, 1)',
+                'rgba(255, 159, 64, 1)'
+            ],
+            borderWidth: 1
         }
       ]
+    }
+    this.chartOptions = {
+        responsive: true,
+        showAllTooltips: true,
+        title: {
+            display: true,
+            position: "top",
+            text: "今日頑張った人",
+            fontSize: 18,
+            fontColor: "#111"
+        },
+        legend: {
+            display: true,
+            position: "bottom",
+            labels: {
+                fontColor: "#333",
+                fontSize: 16
+            }
+        },
+        tooltips: {
+          enabled: true,
+          bodyFontSize: 16,
+          callbacks: {
+            label: (tooltipItem, data) => {
+              let dataset = data.datasets[tooltipItem.datasetIndex]
+              let label = data.labels[tooltipItem.index]
+              //calculate the total of this data set
+              let total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                return previousValue + currentValue;
+              })
+              //get the current items value
+              let currentValue = dataset.data[tooltipItem.index]
+              //calculate the percentage based on the total and current item, also this does a rough rounding to give a whole number
+              let percentage = Math.floor(((currentValue/total) * 100) + 0.5)
+              return label + ' ' + percentage + '%';
+            }
+          }
+        }
     }
     console.log('chartData', this.chartData)
   }
@@ -316,7 +368,19 @@ $table-header-border: 1px solid #FFF;
 
 // ■ TimeChart.
 .timeChartBody {
-  margin: $body-margin;
+  // margin: $body-margin;
+  margin: auto;
+
+  // breakpoint以上.
+  @media (min-width: 600px) {
+    width: 600px;
+    height: 600px;
+  }
+  // breakpoint未満
+  @media (max-width: 340px) {
+    width: 340px;
+    height: 340px;
+  }
 }
 
 </style>
