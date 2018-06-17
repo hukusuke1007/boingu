@@ -19,8 +19,6 @@ router.options("*", cors(options))
 */
 
 export const test = functions.https.onCall((data, context) => {
-  // response.header('Accept', '/')
-  // response.header('withCredentials', 'true')
   console.log('data', data)
   return {
     uid: '10',
