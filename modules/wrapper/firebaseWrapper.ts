@@ -1,5 +1,6 @@
 import firebase from 'firebase/app'
 import User from '~/modules/model/firebase/firebaseUserModel'
+import { helloWorld } from 'functions/lib';
 
 export class firebaseWrapper {
 
