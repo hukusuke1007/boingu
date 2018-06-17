@@ -71,6 +71,7 @@ export default {
     methods: {
         setPlugin () {
             this.addPlugin({
+                /*
                 id: 'myPlugin',
                 beforeRender: (chart) => {
                     if (chart.config.options.showAllTooltips) {
@@ -114,6 +115,7 @@ export default {
                         chart.options.tooltips.enabled = false;
                     }
                 }
+                */
             })
         }
     }

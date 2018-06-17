@@ -1,10 +1,13 @@
 <template>
-<div class="buttonBody">
+<div class="body">
+  <v-flex  style="margin-top: 8px;">
+    <v-btn round large color="twitter white--text" class="shareBtn" @click="tapShare()">ツイートする</v-btn>
+  </v-flex >
   <v-flex>
     <span v-for="(item, key, index) in tryList" :key="index">
-      <a href="#" class="btn" @click="tryRegist(item)" v-bind:class="item.color">{{ item.content }}</a>
+      <a href="#" class="addBtn" @click="tryRegist(item)" v-bind:class="item.color">{{ item.content }}</a>
     </span>
-      <a href="#" class="btn red" @click="tryCreate()">+</a>
+      <a href="#" class="addBtn red" @click="tryCreate()">+</a>
   </v-flex>
   <v-flex class="tableBody">
     <div class="nowDate">
@@ -12,7 +15,7 @@
     </div>
     <table class="responstable">
       <tr>
-        <th>時間</th><th>内容</th><th>コメント</th><th></th>
+        <th>リソース</th><th>内容</th><th></th>
       </tr>
         <tr v-for="(item, key, index) in timeDataList" :key="index">
           <td data-th="時間">{{ item.time }}</td>
@@ -26,7 +29,7 @@
       <!-- 今日もお疲れ様でした！<br>今日の自分を記録してみませんか？ -->
     </div>
   </v-flex>
-  <v-flex class="timeChartBody">
+  <v-flex class="timeChartBody" ref="timaChart">
     <TimeDataChart 
        v-bind:chartData="chartData"
        v-bind:options="chartOptions"
@@ -41,6 +44,8 @@ import {
   Vue
 } from "nuxt-property-decorator"
 import { State, Action, namespace } from 'vuex-class'
+import html2canvas from 'html2canvas'
+
 import TimeDataChart from '~/components/TimeDataChart.vue'
 import utility from '~/modules/utils/utility'
 
@@ -72,11 +77,12 @@ export default class CreateBestDay extends Vue {
   timeDataList: Array<TimeData> = []
   chartData: Object = {}
   chartOptions: Object = {}
+  util = new utility()
 
   created () {
   }
   mounted () {
-    this.nowDateString = new utility().getDateString(new Date)
+    this.nowDateString = this.util.getDateString(new Date)
     this.chartUpdate()
   }
   tryRegist (item:Try) {
@@ -157,6 +163,26 @@ export default class CreateBestDay extends Vue {
     let deleteData = this.timeDataList[index]
     this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
   }
+  tapShare () {
+    html2canvas(this.$refs.timaChart)
+      .then((canvas) => {
+        let dataURI = canvas.toDataURL('image/png')
+        // this.imageDownload(dataURI, canvas, 'image')
+      }).catch((error) => {
+        console.error(error)
+      })
+  }
+  imageDownload (dataURI, canvas, type) {
+    console.log('canvasSize', canvas.height, canvas.width)
+    let date = new Date()
+    let imageName = 'boingu' + '_' + this.util.getUniqueString()
+    let event = document.createEvent('MouseEvents')
+    event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
+    let a = document.createElement('a')
+    a.href = dataURI
+    a.download = imageName
+    a.dispatchEvent(event)
+  }
 }
 </script>
 <style scoped lang="scss">
@@ -164,12 +190,12 @@ export default class CreateBestDay extends Vue {
 $body-margin: 0px 10px 0px 10px;;
 
 // ■ ボタン.
-.buttonBody {
+.body {
   font-family: 'Open Sans', 'sans-serif';
   background-color: #fff;
 }
 
-.btn {
+.addBtn {
   border-radius: 5px;
   padding: 12px 25px;
   font-size: 22px;
@@ -182,7 +208,7 @@ $body-margin: 0px 10px 0px 10px;;
   height: 52px;
 }
 
-.btn:active {
+.addBtn:active {
   transform: translate(0px, 5px);
   -webkit-transform: translate(0px, 5px);
   box-shadow: 0px 1px 0px 0px;
@@ -328,9 +354,11 @@ $table-header-border: 1px solid #FFF;
         display: table-cell; // turn the table into a 'normal' table-cell for desktop
         padding: 1em;
         &:first-child {
-          text-align: center;
+          // text-align: center;
+          width: 7em;
         }
         &:last-child {
+          width: 5em;
           text-align: center;
         }
       }
