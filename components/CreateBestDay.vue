@@ -17,8 +17,8 @@
         <tr v-for="(item, key, index) in timeDataList" :key="index">
           <td data-th="時間">{{ item.time }}</td>
           <td data-th="内容">{{ item.content }}</td>
-          <td data-th="コメント">{{ item.comment }}</td>
-          <td data-th="削除"><a href="#" class="deleteBtn" @click="tapDelete(key)"><v-icon color="grey">delete</v-icon></a>
+          <!-- <td data-th="コメント">{{ item.comment }}</td> -->
+          <td data-th=""><a href="#" class="deleteBtn" @click="tapDelete(key)"><v-icon color="grey">delete</v-icon></a>
           </td>
         </tr>
     </table>
