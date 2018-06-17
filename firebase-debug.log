@@ -1,0 +1,32 @@
+[debug] [2018-06-17T14:08:23.187Z] ----------------------------------------------------------------------
+[debug] [2018-06-17T14:08:23.189Z] Command:       /usr/local/bin/node /usr/local/bin/firebase deploy --only functions
+[debug] [2018-06-17T14:08:23.189Z] CLI Version:   3.18.4
+[debug] [2018-06-17T14:08:23.189Z] Platform:      darwin
+[debug] [2018-06-17T14:08:23.189Z] Node Version:  v9.2.0
+[debug] [2018-06-17T14:08:23.189Z] Time:          Sun Jun 17 2018 23:08:23 GMT+0900 (JST)
+[debug] [2018-06-17T14:08:23.189Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-06-17T14:08:23.198Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-06-17T14:08:23.199Z] > authorizing via signed-in user
+[debug] [2018-06-17T14:08:23.201Z] > refreshing access token with scopes: ["email","https://www.googleapis.com/auth/cloud-platform","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","openid"]
+[debug] [2018-06-17T14:08:23.202Z] >>> HTTP REQUEST POST https://www.googleapis.com/oauth2/v3/token  
+ { refresh_token: '1/UqNP7UnsgSIATgeqjsdVgmveAodCoIQp_sAcEWGap8E',
+  client_id: '563584335869-fgrhgmd47bqnekij5i8b5pr03ho849e6.apps.googleusercontent.com',
+  client_secret: 'j9iVZfS8kkCEFUPaAeJV0sAi',
+  grant_type: 'refresh_token',
+  scope: 'email https://www.googleapis.com/auth/cloud-platform https://www.googleapis.com/auth/cloudplatformprojects.readonly https://www.googleapis.com/auth/firebase openid' } 
+ Sun Jun 17 2018 23:08:23 GMT+0900 (JST)
+[debug] [2018-06-17T14:08:23.481Z] <<< HTTP RESPONSE 200
+[debug] [2018-06-17T14:08:23.493Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/boingu-e5d03  
+  
+ Sun Jun 17 2018 23:08:23 GMT+0900 (JST)
+[debug] [2018-06-17T14:08:24.488Z] <<< HTTP RESPONSE 200
+[debug] [2018-06-17T14:08:24.488Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/boingu-e5d03/tokens  
+  
+ Sun Jun 17 2018 23:08:24 GMT+0900 (JST)
+[debug] [2018-06-17T14:08:25.108Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Deploying to 'boingu-e5d03'...
+[info] 
+[info] i  deploying functions
+[info] Running command: npm --prefix "$RESOURCE_DIR" run build
