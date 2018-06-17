@@ -65,19 +65,7 @@ export const actions: ActionTree<FirebaseState, RootState> = {
     },
 
     // テスト用
-    doSet({ commit }, payload: string) {
-        commit('setLoad', true)
-        let db = firestore()
-        db.collection('ababa').add({
-          first: payload,
-          last: 'Lovelance',
-          born: 1815
-        }).then((docRef) => {
-          console.log(docRef)
-          commit('setLoad', false)
-        }).catch((error) => {
-          console.error(error)
-          commit('setLoad', false)
-        })
+    doSet({ commit }) {
+      frWrapper.shareToTwitter()
     }
 }

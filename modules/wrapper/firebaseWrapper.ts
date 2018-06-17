@@ -72,4 +72,13 @@ export class firebaseWrapper {
         return Promise.resolve(userDoc)
     }
     */
+   public shareToTwitter () {
+       console.log('shareToTwitter')
+       let api = firebase.functions().httpsCallable('helloWorld')
+       api().then((result) => {
+           console.log(result)
+       }).catch((error) => {
+           console.error(error)
+       })
+   }
 }

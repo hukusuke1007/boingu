@@ -70,6 +70,7 @@ const FirebaseModule = namespace(firebaseStore.name)
 })
 export default class CreateBestDay extends Vue {
   // @Prop()
+  @FirebaseModule.Action doSet
   @FirebaseModule.State tryList:Array<Try>
   @FirebaseModule.State user:User
 
@@ -84,6 +85,7 @@ export default class CreateBestDay extends Vue {
   mounted () {
     this.nowDateString = this.util.getDateString(new Date)
     this.chartUpdate()
+    this.doSet()
   }
   tryRegist (item:Try) {
     console.log(item.content)
