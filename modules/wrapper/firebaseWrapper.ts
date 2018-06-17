@@ -1,6 +1,6 @@
 import firebase from 'firebase/app'
 import User from '~/modules/model/firebase/firebaseUserModel'
-import { helloWorld } from 'functions/lib';
+import axios from 'axios'
 
 export class firebaseWrapper {
 
@@ -75,11 +75,26 @@ export class firebaseWrapper {
     */
    public shareToTwitter () {
        console.log('shareToTwitter')
-       let api = firebase.functions().httpsCallable('helloWorld')
-       api().then((result) => {
+       let api = firebase.functions().httpsCallable('test')
+       api({text: 'test'}).then((result) => {
            console.log(result)
        }).catch((error) => {
            console.error(error)
        })
+
+       let restApi = 'https://us-central1-boingu-e5d03.cloudfunctions.net/helloWorld'
+       let json = {
+           id: '1',
+           name: 'aaa'
+       }
+       let options = {
+         headers: {'Content-Type': 'application/json'}
+       }
+       axios.post(restApi, json, options)
+         .then((result) => {
+             console.log(result)
+         }).catch((error) => {
+             console.error(error)
+         })
    }
 }

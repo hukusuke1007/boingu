@@ -85,7 +85,6 @@ export default class CreateBestDay extends Vue {
   mounted () {
     this.nowDateString = this.util.getDateString(new Date)
     this.chartUpdate()
-    this.doSet()
   }
   tryRegist (item:Try) {
     console.log(item.content)
@@ -166,6 +165,8 @@ export default class CreateBestDay extends Vue {
     this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
   }
   tapShare () {
+    this.doSet()
+        /*
     html2canvas(this.$refs.timaChart)
       .then((canvas) => {
         let dataURI = canvas.toDataURL('image/png')
@@ -173,6 +174,7 @@ export default class CreateBestDay extends Vue {
       }).catch((error) => {
         console.error(error)
       })
+      */
   }
   imageDownload (dataURI, canvas, type) {
     console.log('canvasSize', canvas.height, canvas.width)

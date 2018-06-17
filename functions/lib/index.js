@@ -1,24 +1,52 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
-const express = require("express");
-const cors = require("cors");
+/*
+import * as express from 'express'
+import * as cors from 'cors'
+*/
 // import Utility from './utility'
 // let util = new Utility()
-let router = express.Router();
-const options = {
-    allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
-    credentials: true,
-    methods: "GET,POST",
-    origin: true,
-    preflightContinue: false
-};
-router.use(cors(options));
-router.options("*", cors(options));
+/*
+let router = express.Router()
+const options:cors.CorsOptions = {
+  allowedHeaders: ["Origin", "X-Requested-With", "Content-Type", "Accept", "X-Access-Token"],
+  credentials: true,
+  methods: 'GET, POST, PUT, DELETE, OPTIONS',
+  origin: true,
+  preflightContinue: false
+}
+router.use(cors(options))
+router.options("*", cors(options))
+*/
+exports.test = functions.https.onCall((data, context) => {
+    // response.header('Accept', '/')
+    // response.header('withCredentials', 'true')
+    console.log('data', data);
+    return {
+        uid: '10',
+        data: 'datadayo',
+        context: context
+    };
+});
 exports.helloWorld = functions.https.onRequest((request, response) => {
+    /*
+      // response.header('Accept', '/')
+      // response.header('withCredentials', 'true')
+      response.header('Content-Type','application/json')
+      response.header('Access-Control-Allow-Origin', '*')
+      response.header('Access-Control-Allow-Credentials', 'true')
+      response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token", Authorization')
+    */
+    response = setheader(response);
+    console.log(request.body);
+    response.status(200).json({ result: 'ok' }).end();
+});
+function setheader(response) {
     response.header('Content-Type', 'application/json');
     response.header('Access-Control-Allow-Origin', '*');
-    response.header('Access-Control-Allow-Headers', 'Content-Type');
-    response.status(200).send("Hello world!");
-});
+    response.header('Access-Control-Allow-Credentials', 'true');
+    response.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, X-Access-Token", Authorization');
+    return response;
+}
 //# sourceMappingURL=index.js.map
