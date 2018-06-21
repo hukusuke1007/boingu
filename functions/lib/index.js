@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const functions = require("firebase-functions");
+const firebase = require("firebase-admin");
 const twitterModel_1 = require("./model/twitter/twitterModel");
+const storageModel_1 = require("./model/firebase/storageModel");
 /*
 import * as express from 'express'
 import * as cors from 'cors'
@@ -16,6 +18,7 @@ const options:cors.CorsOptions = {
 router.use(cors(options))
 router.options("*", cors(options))
 */
+firebase.initializeApp();
 let twitter = new twitterModel_1.default();
 /*
   HTTPS Callable functions must be called using the POST method,
@@ -37,9 +40,27 @@ exports.tweetRequest = functions.https.onRequest((request, response) => {
     twitter.tweet('test tweet dayo')
         .then((result) => {
         console.log('tweetRequest', result);
-        response.status(200).json({ message: 'ok', result: result }).end();
+        response.status(200).json({ message: 'OK', result: result }).end();
     }).catch((error) => {
         console.error('tweetRequest', error);
+        response.status(500).json({ message: 'NG', result: error }).end();
+    });
+});
+exports.tweetWithMedia = functions.https.onRequest((request, response) => {
+    response = setheader(response);
+    let filenamePath = 'images/boingu_164224f1a4aa74ad3681e8fc00_20180621.png';
+    let storage = new storageModel_1.default(filenamePath);
+    // ViewModelかました方が良いかも.
+    storage.downloadFile()
+        .then((result) => {
+        let message = 'image test dayo';
+        twitter.tweetWithMedia(message, result)
+            .then((result) => {
+            response.status(200).json({ message: 'OK', result: result }).end();
+        }).catch((error) => {
+            response.status(500).json({ message: 'NG', result: error }).end();
+        });
+    }).catch((error) => {
         response.status(500).json({ message: 'NG', result: error }).end();
     });
 });

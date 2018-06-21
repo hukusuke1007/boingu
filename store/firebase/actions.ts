@@ -63,7 +63,17 @@ export const actions: ActionTree<FirebaseState, RootState> = {
           commit('setLoad', false)
         })
     },
-
+    // ファイルをアップデート
+    doUpdateFile({commit}, file: any) {
+      let util = new utility()
+      let fileName = 'boingu' + '_' + util.getUniqueString() + "_" + util.getDateStringLabel(new Date) + ".png"
+      frWrapper.updateFile(fileName, file)
+       .then((result) => {
+         console.log(result)
+       }).catch((error) => {
+         console.error(error)
+       })
+    },
     // テスト用
     doSet({ commit }) {
       frWrapper.shareToTwitter()

@@ -1,0 +1,39 @@
+[debug] [2018-06-21T13:59:24.524Z] ----------------------------------------------------------------------
+[debug] [2018-06-21T13:59:24.526Z] Command:       /usr/local/bin/node /usr/local/bin/firebase serve --only functions
+[debug] [2018-06-21T13:59:24.526Z] CLI Version:   3.18.4
+[debug] [2018-06-21T13:59:24.526Z] Platform:      darwin
+[debug] [2018-06-21T13:59:24.526Z] Node Version:  v9.2.0
+[debug] [2018-06-21T13:59:24.527Z] Time:          Thu Jun 21 2018 22:59:24 GMT+0900 (JST)
+[debug] [2018-06-21T13:59:24.527Z] ----------------------------------------------------------------------
+[debug] 
+[debug] [2018-06-21T13:59:24.537Z] > command requires scopes: ["email","openid","https://www.googleapis.com/auth/cloudplatformprojects.readonly","https://www.googleapis.com/auth/firebase","https://www.googleapis.com/auth/cloud-platform"]
+[debug] [2018-06-21T13:59:24.537Z] > authorizing via signed-in user
+[debug] [2018-06-21T13:59:24.539Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/projects/boingu-e5d03  
+  
+ Thu Jun 21 2018 22:59:24 GMT+0900 (JST)
+[debug] [2018-06-21T13:59:25.268Z] <<< HTTP RESPONSE 200
+[debug] [2018-06-21T13:59:25.268Z] >>> HTTP REQUEST GET https://admin.firebase.com/v1/database/boingu-e5d03/tokens  
+  
+ Thu Jun 21 2018 22:59:25 GMT+0900 (JST)
+[debug] [2018-06-21T13:59:26.036Z] <<< HTTP RESPONSE 200
+[debug] [2018-06-21T13:59:26.037Z] >>> HTTP REQUEST GET https://cloudresourcemanager.googleapis.com/v1/projects/boingu-e5d03  
+  
+ Thu Jun 21 2018 22:59:26 GMT+0900 (JST)
+[debug] [2018-06-21T13:59:27.164Z] <<< HTTP RESPONSE 200
+[info] 
+[info] === Serving from '/Users/hukusuke/Desktop/Start/Development/0_Web/boingu'...
+[info] 
+[info] i  functions: Preparing to emulate functions.
+[debug] [2018-06-21T13:59:27.615Z] Fetching environment
+[debug] [2018-06-21T13:59:27.616Z] >>> HTTP REQUEST GET https://mobilesdk-pa.googleapis.com/v1/projects/342800857588:getServerAppConfig  
+  
+ Thu Jun 21 2018 22:59:27 GMT+0900 (JST)
+[debug] [2018-06-21T13:59:28.212Z] <<< HTTP RESPONSE 200
+[debug] [2018-06-21T13:59:28.212Z] Starting @google-cloud/functions-emulator
+[debug] [2018-06-21T13:59:29.306Z] Parsing function triggers
+[info] ✔  functions: tweet: http://localhost:5000/boingu-e5d03/us-central1/tweet
+[info] ✔  functions: twTimeline: http://localhost:5000/boingu-e5d03/us-central1/twTimeline
+[info] ✔  functions: tweetWithMedia: http://localhost:5000/boingu-e5d03/us-central1/tweetWithMedia
+[info] ✔  functions: tweetRequest: http://localhost:5000/boingu-e5d03/us-central1/tweetRequest
+[info] ✔  functions: helloWorld: http://localhost:5000/boingu-e5d03/us-central1/helloWorld
+[info] ✔  functions: test: http://localhost:5000/boingu-e5d03/us-central1/test

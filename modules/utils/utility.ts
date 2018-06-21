@@ -42,6 +42,18 @@ export default class utility {
         return dateString
     }
 
+    public getDateStringLabel(date: Date): string {
+        let months = [
+            '01', '02', '03', '04', '05', '06', '07', '08',
+            '09', '10', '11', '12'
+        ]
+        let month = months[date.getMonth()].toString()
+        let day = date.getDate().toString()
+        let year = date.getFullYear().toString()
+        let dateString = year + month + day
+        return dateString
+    }
+
     public isSmartPhone (): boolean {
         let media = [
           'iPhone',
@@ -74,6 +86,20 @@ export default class utility {
     public getUniqueString (): string {
         let strong = Math.pow(10, 18)
         return new Date().getTime().toString(16)  + Math.floor(strong*Math.random()).toString(16)
+    }
+
+    public toBlob (dataURL: any): any {
+        let base64 = dataURL
+        let bin = atob(base64.replace(/^.*,/, ''))
+        let buffer = new Uint8Array(bin.length)
+        for (let i = 0; i < bin.length; i++) {
+            buffer[i] = bin.charCodeAt(i)
+        }
+        // Blobを作成
+        let blob = new Blob([buffer.buffer], {
+            type: 'mimeType'
+        })
+        return blob
     }
       
 }

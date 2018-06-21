@@ -73,6 +73,36 @@ export class firebaseWrapper {
         return Promise.resolve(userDoc)
     }
     */
+   public async updateFile (fileName: string, file: any): Promise<any> {
+       let result: any
+       try {
+           let storageRef = firebase.storage().ref()
+           let mountainsRef = storageRef.child('images/' + fileName)
+           mountainsRef.put(file)
+             .then((result) => {
+                 console.log('updateFile', result)
+             }).catch((error) => {
+                 console.error('updateFile', error)
+             })
+       } catch (error) {
+           return Promise.reject(error)
+       }
+       return Promise.resolve(result)
+   }
+
+   public async downloadFile (folderName: string, filename: string): Promise<any> {
+        let result: any
+        try {
+            let path = folderName + '/' + filename
+            let storage = firebase.storage()
+            let pathRef = storage.ref()
+            result = await pathRef.child(path).getDownloadURL()
+        } catch (error) {
+            return Promise.reject(error)
+        }
+        return Promise.resolve(result)
+    }
+
    public shareToTwitter () {
        console.log('shareToTwitter')
        let api = firebase.functions().httpsCallable('test')

@@ -1,5 +1,7 @@
 import * as functions from 'firebase-functions'
+import * as firebase from 'firebase-admin'
 import twitterModel from './model/twitter/twitterModel'
+import storageModel from './model/firebase/storageModel'
 
 /*
 import * as express from 'express'
@@ -16,8 +18,8 @@ router.use(cors(options))
 router.options("*", cors(options))
 */
 
+firebase.initializeApp()
 let twitter = new twitterModel()
-
 /* 
   HTTPS Callable functions must be called using the POST method,
   the Content-Type must be application/json or application/json; charset=utf-8,
@@ -40,11 +42,30 @@ export const tweetRequest = functions.https.onRequest((request, response) => {
   twitter.tweet('test tweet dayo')
     .then((result) => {
       console.log('tweetRequest', result)
-      response.status(200).json({message: 'ok', result: result}).end()
+      response.status(200).json({message: 'OK', result: result}).end()
     }).catch((error) => {
       console.error('tweetRequest', error)
       response.status(500).json({message: 'NG', result: error}).end()
     })
+})
+
+export const tweetWithMedia = functions.https.onRequest((request, response) => {
+  response = setheader(response)
+  let filenamePath = 'images/boingu_164224f1a4aa74ad3681e8fc00_20180621.png'
+  let storage = new storageModel(filenamePath)
+  // ViewModelかました方が良いかも.
+  storage.downloadFile()
+   .then((result) => {
+     let message = 'image test dayo'
+     twitter.tweetWithMedia(message, result)
+       .then((result) => {
+         response.status(200).json({message: 'OK', result: result}).end()
+       }).catch((error) => {
+         response.status(500).json({message: 'NG', result: error}).end()
+       })
+   }).catch((error) => {
+     response.status(500).json({message: 'NG', result: error}).end()
+   })
 })
 
 

@@ -53,7 +53,8 @@ import * as firebaseStore from '~/store/firebase'
 import User from '~/modules/model/firebase/firebaseUserModel'
 import Try from '~/modules/model/firebase/firebaseTryModel'
 import TimeData from '~/modules/model/firebase/firebaseTimeDataModel'
-import { Observer } from "firebase";
+import { firebaseWrapper } from '~/modules/wrapper/firebaseWrapper'
+
 const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
@@ -71,6 +72,7 @@ const FirebaseModule = namespace(firebaseStore.name)
 export default class CreateBestDay extends Vue {
   // @Prop()
   @FirebaseModule.Action doSet
+  @FirebaseModule.Action doUpdateFile
   @FirebaseModule.State tryList:Array<Try>
   @FirebaseModule.State user:User
 
@@ -165,21 +167,32 @@ export default class CreateBestDay extends Vue {
     this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
   }
   tapShare () {
-    this.doSet()
-        /*
+    /*
     html2canvas(this.$refs.timaChart)
       .then((canvas) => {
-        let dataURI = canvas.toDataURL('image/png')
+        let Blob = this.util.toBlob(canvas.toDataURL('image/png'))
+        this.doUpdateFile(Blob)
         // this.imageDownload(dataURI, canvas, 'image')
       }).catch((error) => {
         console.error(error)
       })
-      */
+    */
+   this.tapDownload()
+  }
+  tapDownload () {
+    let wrapper = new firebaseWrapper()
+    let folder = 'images'
+    let filename = 'boingu_164224f1a4aa74ad3681e8fc00_20180621.png'
+    wrapper.downloadFile(folder, filename)
+     .then((result) => {
+       this.imageDownload(result, null, null)
+     }).catch((error) => {
+       console.error('tapDownload', error)
+     })
   }
   imageDownload (dataURI, canvas, type) {
-    console.log('canvasSize', canvas.height, canvas.width)
-    let date = new Date()
-    let imageName = 'boingu' + '_' + this.util.getUniqueString()
+    // console.log('canvasSize', canvas.height, canvas.width)
+    let imageName = 'boingu' + '_' + this.util.getUniqueString() + "_" + this.util.getDateStringLabel(new Date)
     let event = document.createEvent('MouseEvents')
     event.initMouseEvent('click', true, false, window, 0, 0, 0, 0, 0, false, false, false, false, 0, null)
     let a = document.createElement('a')
