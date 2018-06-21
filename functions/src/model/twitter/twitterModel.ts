@@ -17,6 +17,7 @@ export default class twitterModel {
         let result: any
         try {
             let params = {status: msg}
+            console.log('twClient', process.env.TWITTER_CONSUMER_KEY)
             result = await this.twClient.post('statuses/update', params)
             console.log(result)
             /*

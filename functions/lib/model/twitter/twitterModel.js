@@ -25,6 +25,7 @@ class twitterModel {
             let result;
             try {
                 let params = { status: msg };
+                console.log('twClient', process.env.TWITTER_CONSUMER_KEY);
                 result = yield this.twClient.post('statuses/update', params);
                 console.log(result);
                 /*
