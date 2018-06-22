@@ -22,9 +22,11 @@ const FirebaseModule = namespace(firebaseStore.name)
   watch: {
     user (newVal, oldVal) {
       console.log('index watch', newVal, oldVal)
+      /*
       if (newVal !== undefined) {
         this.$router.push( {name: 'dashboard'} )
       }
+      */
     }
   }
 })

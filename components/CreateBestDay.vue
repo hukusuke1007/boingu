@@ -187,7 +187,7 @@ export default class CreateBestDay extends Vue {
      .then((result) => {
        this.imageDownload(result, null, null)
      }).catch((error) => {
-       console.error('tapDownload', error)
+       console.error('tapDownload', error.code, error.message)
      })
   }
   imageDownload (dataURI, canvas, type) {

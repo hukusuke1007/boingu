@@ -7,7 +7,27 @@ export class firebaseWrapper {
     constructor() {
         console.log('constructor firebaseWrapper')
     }
-   
+
+    /*** ここから下は全てModelに集約 ***/
+    public async login (type: string): Promise<User> {
+        let user:User = null
+        try {
+            let provider: any
+            if (type === 'twitter') {
+                provider = new firebase.auth.TwitterAuthProvider()
+            }
+            let auth = await firebase.auth().signInWithPopup(provider)
+            /*
+            user = new User(auth.user.uid, new Date(), new Date(), 
+                    auth.additionalUserInfo.username, auth.user.displayName,
+                    auth.user.email, auth.additionalUserInfo.profile.description)
+            */       
+        } catch (error) {
+            return Promise.reject(error)
+        }
+        return Promise.resolve(user)
+    }
+
     public getMyAccount() {
         let promise = new Promise<User>((resolve, reject) => {
             let user:User = null
@@ -19,9 +39,11 @@ export class firebaseWrapper {
                     frStore.collection('user').doc(auth.uid).get()
                       .then((ref) => {
                         let refUser = ref.data()
+                        /*
                         user = new User(refUser.uid, refUser.createDate, refUser.updateDate, 
                                         refUser.username, refUser.displayName,
                                         refUser.email, refUser.description)
+                        */
                         resolve(user)
                       }).catch((error) => {
                         console.error(error)
@@ -31,23 +53,6 @@ export class firebaseWrapper {
             })
         })
         return promise
-    }
-
-    public async login (type: string): Promise<User> {
-        let user:User = null
-        try {
-            let provider: any
-            if (type === 'twitter') {
-                provider = new firebase.auth.TwitterAuthProvider()
-            }
-            let auth = await firebase.auth().signInWithPopup(provider)
-            user = new User(auth.user.uid, new Date(), new Date(), 
-                    auth.additionalUserInfo.username, auth.user.displayName,
-                    auth.user.email, auth.additionalUserInfo.profile.description)          
-        } catch (error) {
-            return Promise.reject(error)
-        }
-        return Promise.resolve(user)
     }
 
     public async createUser (user: User): Promise<User> {
