@@ -8,7 +8,8 @@ export class firebaseWrapper {
         console.log('constructor firebaseWrapper')
     }
 
-    /*** ここから下は全てModelに集約 ***/
+    /*** ここから下は全てModelに集約　削除予定 ***/
+    /*
     public async login (type: string): Promise<User> {
         let user:User = null
         try {
@@ -17,11 +18,11 @@ export class firebaseWrapper {
                 provider = new firebase.auth.TwitterAuthProvider()
             }
             let auth = await firebase.auth().signInWithPopup(provider)
-            /*
-            user = new User(auth.user.uid, new Date(), new Date(), 
+            
+            // user = new User(auth.user.uid, new Date(), new Date(), 
                     auth.additionalUserInfo.username, auth.user.displayName,
                     auth.user.email, auth.additionalUserInfo.profile.description)
-            */       
+                  
         } catch (error) {
             return Promise.reject(error)
         }
@@ -39,11 +40,9 @@ export class firebaseWrapper {
                     frStore.collection('user').doc(auth.uid).get()
                       .then((ref) => {
                         let refUser = ref.data()
-                        /*
-                        user = new User(refUser.uid, refUser.createDate, refUser.updateDate, 
+                        // user = new User(refUser.uid, refUser.createDate, refUser.updateDate, 
                                         refUser.username, refUser.displayName,
                                         refUser.email, refUser.description)
-                        */
                         resolve(user)
                       }).catch((error) => {
                         console.error(error)
@@ -54,7 +53,6 @@ export class firebaseWrapper {
         })
         return promise
     }
-
     public async createUser (user: User): Promise<User> {
         let userDoc = user
         let frStore = firebase.firestore()
@@ -65,35 +63,24 @@ export class firebaseWrapper {
         }
         return Promise.resolve(userDoc)
     }
-    /*
-    public async test (user: User): Promise<User> {
-        let userDoc = user
-        let frStore = firebase.firestore()
+    */
+    // storageModelに集約すべきか
+    public async updateFile (fileName: string, file: any): Promise<any> {
+        let result: any
         try {
-            const ref = await frStore.collection('user/${ref.uid}').add(user.toJSON())
-            userDoc.id = ref.id
+            let storageRef = firebase.storage().ref()
+            let mountainsRef = storageRef.child('images/' + fileName)
+            mountainsRef.put(file)
+                .then((result) => {
+                    console.log('updateFile', result)
+                }).catch((error) => {
+                    console.error('updateFile', error)
+                })
         } catch (error) {
             return Promise.reject(error)
         }
-        return Promise.resolve(userDoc)
+        return Promise.resolve(result)
     }
-    */
-   public async updateFile (fileName: string, file: any): Promise<any> {
-       let result: any
-       try {
-           let storageRef = firebase.storage().ref()
-           let mountainsRef = storageRef.child('images/' + fileName)
-           mountainsRef.put(file)
-             .then((result) => {
-                 console.log('updateFile', result)
-             }).catch((error) => {
-                 console.error('updateFile', error)
-             })
-       } catch (error) {
-           return Promise.reject(error)
-       }
-       return Promise.resolve(result)
-   }
 
    public async downloadFile (folderName: string, filename: string): Promise<any> {
         let result: any
@@ -108,28 +95,29 @@ export class firebaseWrapper {
         return Promise.resolve(result)
     }
 
-   public shareToTwitter () {
-       console.log('shareToTwitter')
-       let api = firebase.functions().httpsCallable('test')
-       api({text: 'test'}).then((result) => {
-           console.log(result)
-       }).catch((error) => {
-           console.error(error)
-       })
+    // これはwrapperで良い気がする.
+    public shareToTwitter () {
+        console.log('shareToTwitter')
+        let api = firebase.functions().httpsCallable('test')
+        api({text: 'test'}).then((result) => {
+            console.log(result)
+        }).catch((error) => {
+            console.error(error)
+        })
 
-       let restApi = 'https://us-central1-boingu-e5d03.cloudfunctions.net/helloWorld'
-       let json = {
-           id: '1',
-           name: 'aaa'
-       }
-       let options = {
-         headers: {'Content-Type': 'application/json'}
-       }
-       axios.post(restApi, json, options)
-         .then((result) => {
-             console.log(result)
-         }).catch((error) => {
-             console.error(error)
-         })
+        let restApi = 'https://us-central1-boingu-e5d03.cloudfunctions.net/helloWorld'
+        let json = {
+            id: '1',
+            name: 'aaa'
+        }
+        let options = {
+            headers: {'Content-Type': 'application/json'}
+        }
+        axios.post(restApi, json, options)
+            .then((result) => {
+                console.log(result)
+            }).catch((error) => {
+                console.error(error)
+            })
    }
 }
