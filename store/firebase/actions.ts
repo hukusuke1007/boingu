@@ -106,6 +106,6 @@ export const actions: ActionTree<FirebaseState, RootState> = {
     },
     // テスト用
     doSet({ commit }) {
-      frWrapper.shareToTwitter()
+      frWrapper.shareToSNS()
     }
 }

@@ -167,18 +167,17 @@ export default class CreateBestDay extends Vue {
     this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
   }
   tapShare () {
-    /*
+    let message: string = "テストツイート"
     html2canvas(this.$refs.timaChart)
       .then((canvas) => {
+        let wrapper = new firebaseWrapper()
         let Blob = this.util.toBlob(canvas.toDataURL('image/png'))
-        this.doUpdateFile(Blob)
-        // this.imageDownload(dataURI, canvas, 'image')
+        wrapper.shareMyBestDay(message, Blob)
       }).catch((error) => {
         console.error(error)
       })
-    */
-   this.tapDownload()
   }
+  /*
   tapDownload () {
     let wrapper = new firebaseWrapper()
     let folder = 'images'
@@ -200,6 +199,7 @@ export default class CreateBestDay extends Vue {
     a.download = imageName
     a.dispatchEvent(event)
   }
+  */
 }
 </script>
 <style scoped lang="scss">
