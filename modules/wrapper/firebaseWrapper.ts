@@ -1,8 +1,10 @@
+/*
 import firebase from 'firebase/app'
 import User from '~/modules/model/firebase/firebaseUserModel'
 import axios from 'axios'
 import utility from '~/modules/utils/utility'
-
+*/
+/* 削除予定 */
 export class firebaseWrapper {
 
     REST_API: string = process.env.FIREBASE_FUNCTIONS_REST_API
@@ -69,6 +71,7 @@ export class firebaseWrapper {
     */
     
     // ViewModel的なとこでやるべきか.
+    /*
     public async shareMyBestDay (message: string, file: any): Promise<any>{
         let util = new utility()
         let filenamePath = 'images/' + 'boingu' + '_' + util.getUniqueString() + "_" + util.getDateStringLabel(new Date) + ".png"
@@ -81,35 +84,9 @@ export class firebaseWrapper {
         }
         return Promise.resolve(result)
     }
-
-    // storageModelに集約すべきか
-    public async updateFile (filenamePath: string, file: any): Promise<any> {
-        let result: any
-        try {
-            let storageRef = firebase.storage().ref()
-            let mountainsRef = storageRef.child(filenamePath)
-            result = await mountainsRef.put(file)
-            console.log('updateFile', result)
-        } catch (error) {
-            return Promise.reject(error)
-        }
-        return Promise.resolve(result)
-    }
-
-   public async downloadFile (folderName: string, filename: string): Promise<any> {
-        let result: any
-        try {
-            let path = folderName + '/' + filename
-            let storage = firebase.storage()
-            let pathRef = storage.ref()
-            result = await pathRef.child(path).getDownloadURL()
-        } catch (error) {
-            return Promise.reject(error)
-        }
-        return Promise.resolve(result)
-    }
-
+    */
     // これはwrapperで良い気がする.
+    /*
     public async shareMediaToSNS (message: string, filename: string): Promise<any> {
         console.log('shareMediaToTwitter')
         let api = this.REST_API + '/api/tweetWithMedia'
@@ -130,39 +107,6 @@ export class firebaseWrapper {
             return Promise.reject(error)
         }
         return Promise.resolve(result)
-        /*
-        axios.post(api, request, options)
-            .then((result) => {
-                console.log(result)
-            }).catch((error) => {
-                console.error(error)
-            })
-        */
     }
-    // これはwrapperで良い気がする.
-    public shareToSNS () {
-        console.log('shareToTwitter')
-        /*
-        let apiCall = firebase.functions().httpsCallable('test')
-        apiCall({text: 'test'}).then((result) => {
-            console.log(result)
-        }).catch((error) => {
-            console.error(error)
-        })
-        */
-        let api = this.REST_API + '/helloWorld'
-        let request = {
-            id: '1',
-            name: 'aaa'
-        }
-        let options = {
-            headers: {'Content-Type': 'application/json'}
-        }
-        axios.post(api, request, options)
-            .then((result) => {
-                console.log(result)
-            }).catch((error) => {
-                console.error(error)
-            })
-   }
+   */
 }

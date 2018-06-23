@@ -1,13 +1,13 @@
 import { ActionTree } from 'vuex'
 import { FirebaseState } from './types'
 import { RootState } from '../types'
-import { firestore } from 'firebase/app'
+// import { firestore } from 'firebase/app'
 import User from '~/modules/model/firebase/firebaseUserModel'
-import { firebaseWrapper } from '~/modules/wrapper/firebaseWrapper'
+// import { firebaseWrapper } from '~/modules/wrapper/firebaseWrapper'
 import Try from '~/modules/model/firebase/firebaseTryModel'
 import utility from '~/modules/utils/utility'
 
-let frWrapper = new firebaseWrapper()
+// let frWrapper = new firebaseWrapper()
 
 export const actions: ActionTree<FirebaseState, RootState> = {
 
@@ -92,20 +92,5 @@ export const actions: ActionTree<FirebaseState, RootState> = {
           commit('setLoad', false)
         })
       */
-    },
-    // ファイルをアップデート
-    doUpdateFile({commit}, file: any) {
-      let util = new utility()
-      let fileName = 'boingu' + '_' + util.getUniqueString() + "_" + util.getDateStringLabel(new Date) + ".png"
-      frWrapper.updateFile(fileName, file)
-       .then((result) => {
-         console.log(result)
-       }).catch((error) => {
-         console.error(error)
-       })
-    },
-    // テスト用
-    doSet({ commit }) {
-      frWrapper.shareToSNS()
     }
 }

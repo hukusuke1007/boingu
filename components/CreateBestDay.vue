@@ -53,7 +53,7 @@ import * as firebaseStore from '~/store/firebase'
 import User from '~/modules/model/firebase/firebaseUserModel'
 import Try from '~/modules/model/firebase/firebaseTryModel'
 import TimeData from '~/modules/model/firebase/firebaseTimeDataModel'
-import { firebaseWrapper } from '~/modules/wrapper/firebaseWrapper'
+import { firebaseController } from '~/modules/controller/firebaseController'
 
 const FirebaseModule = namespace(firebaseStore.name)
 
@@ -71,8 +71,6 @@ const FirebaseModule = namespace(firebaseStore.name)
 })
 export default class CreateBestDay extends Vue {
   // @Prop()
-  @FirebaseModule.Action doSet
-  @FirebaseModule.Action doUpdateFile
   @FirebaseModule.State tryList:Array<Try>
   @FirebaseModule.State user:User
 
@@ -170,16 +168,16 @@ export default class CreateBestDay extends Vue {
     let message: string = "テストツイート"
     html2canvas(this.$refs.timaChart)
       .then((canvas) => {
-        let wrapper = new firebaseWrapper()
+        let controller = new firebaseController()
         let Blob = this.util.toBlob(canvas.toDataURL('image/png'))
-        wrapper.shareMyBestDay(message, Blob)
+        controller.shareMyBestDay(message, Blob)
       }).catch((error) => {
         console.error(error)
       })
   }
   /*
   tapDownload () {
-    let wrapper = new firebaseWrapper()
+    let wrapper = new firebaseController()
     let folder = 'images'
     let filename = 'boingu_164224f1a4aa74ad3681e8fc00_20180621.png'
     wrapper.downloadFile(folder, filename)
