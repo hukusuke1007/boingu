@@ -18,7 +18,18 @@
         <th>リソース</th><th>内容</th><th></th>
       </tr>
         <tr v-for="(item, key, index) in timeDataList" :key="index">
-          <td data-th="時間">{{ item.time }}</td>
+          <td data-th="リソース">
+            <v-menu offset-x>
+              <v-btn slot="activator" fab small>{{ item.time }}</v-btn>
+              <v-list>
+                <v-list-tile v-for="resource in resources" :key="resource" @click="tapResouce(key, resource)">
+                  <v-list-tile-content>
+                  <v-list-tile-title>{{ resource }} %</v-list-tile-title>
+                  </v-list-tile-content>
+                </v-list-tile>
+              </v-list>
+            </v-menu>
+          </td>
           <td data-th="内容">{{ item.content }}</td>
           <!-- <td data-th="コメント">{{ item.comment }}</td> -->
           <td data-th=""><a href="#" class="deleteBtn" @click="tapDelete(key)"><v-icon color="grey">delete</v-icon></a>
@@ -32,7 +43,6 @@
   <v-flex class="timeChartBody" ref="timaChart">
     <TimeDataChart 
        v-bind:chartData="chartData"
-       v-bind:options="chartOptions"
         />
   </v-flex>
 </div>
@@ -66,6 +76,10 @@ const FirebaseModule = namespace(firebaseStore.name)
   watch: {
     tryList (newVal:Array<Try>, oldVal:Array<Try>) {
       console.log('tryList', newVal, oldVal)
+    },
+    timeDataList (newVal:Array<TimeData>, oldVal:Array<TimeData>) {
+      console.log('timeDataList', newVal, oldVal)
+      this.chartUpdate()
     }
   }
 })
@@ -77,9 +91,8 @@ export default class CreateBestDay extends Vue {
   nowDateString: string = ''
   timeDataList: Array<TimeData> = []
   chartData: Object = {}
-  chartOptions: Object = {}
   util = new utility()
-
+  resources: Array<number> = [10, 30, 50, 70, 100]
   created () {
   }
   mounted () {
@@ -93,75 +106,78 @@ export default class CreateBestDay extends Vue {
   }
   tryCreate () {
   }
-  chartUpdate () {
-    this.chartData = {
-      labels: ["睡眠", "食事", "仕事", "趣味", "仕事", "趣味"],
-      datasets: [
-        {
-            label: '# of Votes',
-            data: [2, 4, 6, 2, 1, 2],
-            backgroundColor: [
-                'rgba(255, 99, 132, 0.2)',
-                'rgba(54, 162, 235, 0.2)',
-                'rgba(255, 206, 86, 0.2)',
-                'rgba(75, 192, 192, 0.2)',
-                'rgba(153, 102, 255, 0.2)',
-                'rgba(255, 159, 64, 0.2)'
-            ],
-            borderColor: [
-                'rgba(255,99,132,1)',
-                'rgba(54, 162, 235, 1)',
-                'rgba(255, 206, 86, 1)',
-                'rgba(75, 192, 192, 1)',
-                'rgba(153, 102, 255, 1)',
-                'rgba(255, 159, 64, 1)'
-            ],
-            borderWidth: 1
-        }
-      ]
+  getColorValidation(index): any {
+    let result: any = {}
+    switch (index) {
+      case 0:
+        result.bgColor = 'rgba(255, 99, 132, 0.2)'
+        result.borderColor = 'rgba(255,99,132,1)'
+        break
+      case 1: 
+        result.bgColor = 'rgba(54, 162, 235, 0.2)'
+        result.borderColor = 'rgba(54, 162, 235, 1)'
+        break
+      case 2:
+        result.bgColor = 'rgba(54, 162, 235, 0.2)'
+        result.borderColor = 'rgba(54, 162, 235, 1)'
+        break
+      case 3:
+        result.bgColor = 'rgba(255, 206, 86, 0.2)'
+        result.borderColor = 'rgba(255, 206, 86, 1)'
+        break
+      case 4:
+        result.bgColor = 'rgba(153, 102, 255, 0.2)'
+        result.borderColor = 'rgba(153, 102, 255, 1)'
+        break
+      default:
+        result.bgColor = 'rgba(153, 102, 255, 0.2)'
+        result.borderColor = 'rgba(153, 102, 255, 1)'
+        break
     }
-    this.chartOptions = {
-        responsive: true,
-        showAllTooltips: true,
-        title: {
-            display: true,
-            position: "top",
-            text: "今日頑張った人",
-            fontSize: 18,
-            fontColor: "#111"
-        },
-        legend: {
-            display: true,
-            position: "bottom",
-            labels: {
-                fontColor: "#333",
-                fontSize: 16
-            }
-        },
-        tooltips: {
-          enabled: true,
-          bodyFontSize: 16,
-          callbacks: {
-            label: (tooltipItem, data) => {
-              let dataset = data.datasets[tooltipItem.datasetIndex]
-              let label = data.labels[tooltipItem.index]
-              //calculate the total of this data set
-              let total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
-                return previousValue + currentValue;
-              })
-              //get the current items value
-              let currentValue = dataset.data[tooltipItem.index]
-              //calculate the percentage based on the total and current item, also this does a rough rounding to give a whole number
-              let percentage = Math.floor(((currentValue/total) * 100) + 0.5)
-              return label + ' ' + percentage + '%';
-            }
+    return result
+  }
+  chartUpdate () {
+    let labels: Array<string> = []
+    let bgColors: Array<string> = []
+    let borderColors: Array<string> = []
+    let datas: Array<number> = []
+    this.timeDataList.forEach((obj, index) => {
+      let color: any = this.getColorValidation(index)
+      labels.push(obj.content)
+      bgColors.push(color.bgColor)
+      borderColors.push(color.borderColor)
+      datas.push(obj.time)
+    })
+    if ( !('label' in this.chartData) ) {
+      this.chartData = {
+        labels: labels,
+        datasets: [
+          {
+              label: '# of Votes',
+              data: datas,
+              backgroundColor: bgColors,
+              borderColor: borderColors,
+              borderWidth: 1
           }
-        }
+        ]
+      }
+    } else {
+      this.chartData['labels'] = labels
+      this.chartData['datasets'][0].data = datas
+      this.chartData['datasets'][0].backgroundColor = bgColors
+      this.chartData['datasets'][0].borderColor = borderColors
     }
     console.log('chartData', this.chartData)
   }
-  tapDelete (index) {
-    let deleteData = this.timeDataList[index]
+  tapResouce (tableIndex:number, resource: number) {
+    console.log('tapResouce', tableIndex, resource)
+    this.timeDataList = this.timeDataList.filter( (obj, index) => {
+      if (index == tableIndex) { obj.time = resource }
+      return obj
+    })
+  }
+  tapDelete (tableIndex:number) {
+    let deleteData = this.timeDataList[tableIndex]
     this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
   }
   tapShare () {

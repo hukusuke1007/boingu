@@ -52,10 +52,6 @@ export default {
         chartData: {
             type: Object,
             default: {}
-        },
-        options: {
-            type: Object,
-            default: {}
         }
     },
     data: () => ({
@@ -66,9 +62,50 @@ export default {
         }
     },
     mounted () {
+        this.setOptions()
         this.setPlugin()
     },
     methods: {
+        setOptions () {
+            this.options = {
+                responsive: true,
+                showAllTooltips: true,
+                title: {
+                    display: true,
+                    position: "top",
+                    text: "今日頑張った人",
+                    fontSize: 18,
+                    fontColor: "#111"
+                },
+                legend: {
+                    display: true,
+                    position: "bottom",
+                    labels: {
+                        fontColor: "#333",
+                        fontSize: 16
+                    }
+                },
+                tooltips: {
+                enabled: true,
+                bodyFontSize: 16,
+                callbacks: {
+                    label: (tooltipItem, data) => {
+                    let dataset = data.datasets[tooltipItem.datasetIndex]
+                    let label = data.labels[tooltipItem.index]
+                    //calculate the total of this data set
+                    let total = dataset.data.reduce(function(previousValue, currentValue, currentIndex, array) {
+                        return previousValue + currentValue;
+                    })
+                    //get the current items value
+                    let currentValue = dataset.data[tooltipItem.index]
+                    //calculate the percentage based on the total and current item, also this does a rough rounding to give a whole number
+                    let percentage = Math.floor(((currentValue/total) * 100) + 0.5)
+                    return label + ' ' + percentage + '%';
+                    }
+                }
+                }
+            }
+        },
         setPlugin () {
             this.addPlugin({
                 /*
