@@ -51,7 +51,8 @@ export const actions: ActionTree<FirebaseState, RootState> = {
       // ログイン.
       let user = getters.user
       user.login(type)
-        .then(() => {
+        .then((result) => {
+          console.log('login', result)
           // try情報も取得する.
           dispatch('doTryList')
           user.updateUserAccount()

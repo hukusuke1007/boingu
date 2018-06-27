@@ -1,3 +1,5 @@
+import firebase from 'firebase/app'
+
 export default abstract class baseModel {
     // ドキュメントオーナーのID
     // readonly uid: string
@@ -9,6 +11,8 @@ export default abstract class baseModel {
     // 更新日
     updateDate: Date
     
+    frStore: firebase.firestore.Firestore = firebase.firestore()
+
     constructor(uid: string, createDate:Date, updateDate:Date) {
         this.uid = uid
         this.createDate = createDate

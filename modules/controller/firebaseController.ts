@@ -1,7 +1,7 @@
 import firebase from 'firebase/app'
 import axios from 'axios'
 import utility from '~/modules/utils/utility'
-import storageModel from '~/modules/model/firebase/firebaseStorageModel'
+import storageModel from '~/modules/model/firebase/storage/firebaseStorageModel'
 
 export class firebaseController {
 
@@ -12,22 +12,21 @@ export class firebaseController {
     }
 
     // ViewModel的なとこでやるべきか.
-    public async shareMyBestDay (message: string, file: any): Promise<any>{
+    async shareMyBestDay (message: string, file: any) {
         let util = new utility()
         let filenamePath = 'images/' + 'boingu' + '_' + util.getUniqueString() + "_" + util.getDateStringLabel(new Date) + ".png"
-        let result: any
         try {
             let storage = new storageModel(filenamePath, file)
-            result = await storage.upload()
-            result = await this.shareMediaToSNS(message, filenamePath)
+            let stResult = await storage.upload()
+            let result = await this.shareMediaToSNS(message, filenamePath)
+            return result
         } catch (error) {
-            return Promise.reject(error)
+            throw error
         }
-        return Promise.resolve(result)
     }
 
     // これはwrapperで良い気がする.
-    public async shareMediaToSNS (message: string, filename: string): Promise<any> {
+    async shareMediaToSNS (message: string, filename: string) {
         console.log('shareMediaToTwitter')
         let api = this.REST_API + '/api/tweetWithMedia'
         let request = {
@@ -38,15 +37,13 @@ export class firebaseController {
             headers: {'Content-Type': 'application/json'}
         }
         
-        let result: any
         try {
             console.log(request)
-            result = await axios.post(api, request, options)
+            let result = await axios.post(api, request, options)
             console.log('shareMediaToSNS', result)
         } catch (error) {
-            return Promise.reject(error)
+            throw error
         }
-        return Promise.resolve(result)
     }
 
     /*

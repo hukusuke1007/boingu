@@ -28,8 +28,7 @@ export default class userModel extends baseModel {
                 console.log('onAuthStateChanged', auth)
                 if (auth != null) {
                     this.isLoad = true
-                    let frStore = firebase.firestore()
-                    frStore.collection('user').doc(auth.uid).get()
+                    this.frStore.collection('user').doc(auth.uid).get()
                       .then((ref) => {
                         let refUser = ref.data()
                         this.setData(refUser.uid, refUser.createDate, refUser.updateDate, 
@@ -48,6 +47,7 @@ export default class userModel extends baseModel {
         return promise
     }
 
+    /*
     async login (type: string): Promise<any> {
         let result: any = { status: 'OK' }
         try {
@@ -64,16 +64,37 @@ export default class userModel extends baseModel {
         }
         return Promise.resolve(result)
     }
-
-    async updateUserAccount (): Promise<any> {
-        let result: any = { status: 'OK' }
+    */
+    async login (type: string) {
         try {
-            let frStore = firebase.firestore()
-            await frStore.collection('user').doc(this.uid).set(this.toJSON())
+            let provider: any = new firebase.auth.TwitterAuthProvider()
+            let auth = await firebase.auth().signInWithPopup(provider)
+            this.setData(auth.user.uid, new Date(), new Date(), 
+                auth.additionalUserInfo.username, auth.user.displayName,
+                auth.user.email, auth.additionalUserInfo.profile.description)
+            return auth
         } catch (error) {
-            return Promise.reject(error)
+            throw error
         }
-        return Promise.resolve(result)
+    }
+
+    async updateUserAccount (){
+        try {
+            let result = await this.frStore.collection('user').doc(this.uid).set(this.toJSON())
+            return result
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async createBestDay () {
+        try {
+            let collection = this.frStore.collection('user').doc(this.uid).collection('bestDay').doc()
+            let result = await collection.set({[collection.id]: true})
+            return result
+        } catch (error) {
+            throw error
+        }
     }
 
     toJSON(): Object {

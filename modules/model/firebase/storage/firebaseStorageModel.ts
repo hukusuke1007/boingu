@@ -7,13 +7,36 @@ export default class storageModel {
     
     filenamePath: string
     file: any
+    frStorage: firebase.storage.Storage = firebase.storage()
 
     constructor (filenamePath: string, file: any) {
         this.filenamePath = filenamePath
         this.file = file
     }
 
-    public async upload (): Promise<any> {
+    async upload () {
+        try {
+            let path = this.filenamePath
+            let mountainsRef = this.frStorage.ref().child(path)
+            let result = await mountainsRef.put(this.file)
+            return result
+        } catch (error) {
+            throw error
+        }
+    }
+
+    async download () {
+        try {
+            let path = this.filenamePath
+            let pathRef = this.frStorage.ref()
+            let result = await pathRef.child(path).getDownloadURL()
+            return result
+        } catch (error) {
+            throw error
+        }
+    }
+    /*
+    async upload (): Promise<any> {
         let result: any
         try {
             let path = this.filenamePath
@@ -27,7 +50,7 @@ export default class storageModel {
         return Promise.resolve(result)
     }
 
-   public async download (): Promise<any> {
+    async download (): Promise<any> {
         let result: any
         try {
             let path = this.filenamePath
@@ -39,7 +62,7 @@ export default class storageModel {
         }
         return Promise.resolve(result)
     }
-
+    */
     /*
     public async delete (): Promise<any> {
         let result: any
