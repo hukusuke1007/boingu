@@ -62,7 +62,7 @@ export default class userModel extends baseModel {
         }
     }
 
-    async setBestDay () {
+    async setBestDayReference () {
         try {
             let collection = this.frStore.collection('user').doc(this.uid).collection('bestDay').doc()
             await collection.set({[collection.id]: true})
@@ -73,7 +73,7 @@ export default class userModel extends baseModel {
         }
     }
 
-    async getBestDay () {
+    async getBestDayReference () {
         try {
             this.bestDays = []
             let snapshot = await this.frStore.collection('user').doc(this.uid).collection('bestDay').get()

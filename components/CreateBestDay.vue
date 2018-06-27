@@ -184,8 +184,8 @@ export default class CreateBestDay extends Vue {
   }
   async tapShare () {
     /*
-    // await this.user.setBestDay()
-    let result = await this.user.getBestDay()
+    // await this.user.setBestDayReference()
+    let result = await this.user.getBestDayReference()
     let id = result[0]
     let bestDay = new BestDay(this.user.uid, new Date(), new Date(), id)
     bestDay.setContents(this.contents)
