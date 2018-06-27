@@ -1,22 +1,34 @@
 import firebase from 'firebase/app'
 import axios from 'axios'
 import utility from '~/modules/utils/utility'
-import storageModel from '~/modules/model/firebase/storage/firebaseStorageModel'
+import StorageModel from '~/modules/model/firebase/storage/firebaseStorageModel'
+import User from '~/modules/model/firebase/firebaseUserModel'
+import BestDay from '~/modules/model/firebase/firebaseBestDayModel'
+import Content from '~/modules/model/firebase/firebaseBestDayContentModel'
+import Try from '~/modules/model/firebase/firebaseTryModel'
+import BestDayContent from '~/modules/model/firebase/firebaseBestDayContentModel'
 
 export class firebaseController {
 
     REST_API: string = process.env.FIREBASE_FUNCTIONS_REST_API
+    user: User = undefined
 
-    constructor() {
-        console.log('constructor firebaseWrapper')
+    constructor (user: User) {
+        this.user = user
     }
 
-    // ViewModel的なとこでやるべきか.
-    async shareMyBestDay (message: string, file: any) {
+    async shareBestDay (message: string, contents: Array<BestDayContent>, file: any) {
         let util = new utility()
         let filenamePath = 'images/' + 'boingu' + '_' + util.getUniqueString() + "_" + util.getDateStringLabel(new Date) + ".png"
         try {
-            let storage = new storageModel(filenamePath, file)
+            // database
+            let id = await this.user.setBestDay()
+            let bestDay = new BestDay(this.user.uid, new Date(), new Date(), id)
+            bestDay.setContents(contents)
+            bestDay.setBestDay()
+
+            // storage
+            let storage = new StorageModel(filenamePath, file)
             let stResult = await storage.upload()
             let result = await this.shareMediaToSNS(message, filenamePath)
             return result
@@ -25,7 +37,6 @@ export class firebaseController {
         }
     }
 
-    // これはwrapperで良い気がする.
     async shareMediaToSNS (message: string, filename: string) {
         console.log('shareMediaToTwitter')
         let api = this.REST_API + '/api/tweetWithMedia'
@@ -46,29 +57,4 @@ export class firebaseController {
         }
     }
 
-    /*
-    public shareToSNS () {
-        console.log('shareToTwitter')
-        let apiCall = firebase.functions().httpsCallable('test')
-        apiCall({text: 'test'}).then((result) => {
-            console.log(result)
-        }).catch((error) => {
-            console.error(error)
-        })
-        let api = this.REST_API + '/helloWorld'
-        let request = {
-            id: '1',
-            name: 'aaa'
-        }
-        let options = {
-            headers: {'Content-Type': 'application/json'}
-        }
-        axios.post(api, request, options)
-            .then((result) => {
-                console.log(result)
-            }).catch((error) => {
-                console.error(error)
-            })
-   }
-   */
 }

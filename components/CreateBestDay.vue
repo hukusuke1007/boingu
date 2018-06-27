@@ -17,7 +17,7 @@
       <tr>
         <th>リソース</th><th>内容</th><th></th>
       </tr>
-        <tr v-for="(item, key, index) in timeDataList" :key="index">
+        <tr v-for="(item, key, index) in contents" :key="index">
           <td data-th="リソース">
             <v-menu offset-x>
               <v-btn slot="activator" fab small>{{ item.resource }}</v-btn>
@@ -36,7 +36,7 @@
           </td>
         </tr>
     </table>
-    <div class="descriptionBody" v-if="timeDataList.length===0">
+    <div class="descriptionBody" v-if="contents.length===0">
       <!-- 今日もお疲れ様でした！<br>今日の自分を記録してみませんか？ -->
     </div>
   </v-flex>
@@ -61,6 +61,8 @@ import utility from '~/modules/utils/utility'
 
 import * as firebaseStore from '~/store/firebase'
 import User from '~/modules/model/firebase/firebaseUserModel'
+import BestDay from '~/modules/model/firebase/firebaseBestDayModel'
+import Content from '~/modules/model/firebase/firebaseBestDayContentModel'
 import Try from '~/modules/model/firebase/firebaseTryModel'
 import BestDayContent from '~/modules/model/firebase/firebaseBestDayContentModel'
 import { firebaseController } from '~/modules/controller/firebaseController'
@@ -77,8 +79,8 @@ const FirebaseModule = namespace(firebaseStore.name)
     tryList (newVal:Array<Try>, oldVal:Array<Try>) {
       console.log('tryList', newVal, oldVal)
     },
-    timeDataList (newVal:Array<BestDayContent>, oldVal:Array<BestDayContent>) {
-      console.log('timeDataList', newVal, oldVal)
+    contents (newVal:Array<BestDayContent>, oldVal:Array<BestDayContent>) {
+      console.log('contents', newVal, oldVal)
       this.chartUpdate()
     }
   }
@@ -89,7 +91,7 @@ export default class CreateBestDay extends Vue {
   @FirebaseModule.State user:User
 
   nowDateString: string = ''
-  timeDataList: Array<BestDayContent> = []
+  contents: Array<BestDayContent> = []
   chartData: Object = {}
   util = new utility()
   resources: Array<number> = [10, 30, 50, 70, 100]
@@ -101,8 +103,8 @@ export default class CreateBestDay extends Vue {
   }
   tryRegist (item:Try) {
     console.log(item.content)
-    let data = new BestDayContent(this.user.uid, new Date, new Date, 10, item.content, 'comment test', item.color)
-    this.timeDataList.push(data)
+    let data = new BestDayContent(10, item.content, 'comment test', item.color)
+    this.contents.push(data)
   }
   tryCreate () {
   }
@@ -141,7 +143,7 @@ export default class CreateBestDay extends Vue {
     let bgColors: Array<string> = []
     let borderColors: Array<string> = []
     let datas: Array<number> = []
-    this.timeDataList.forEach((obj, index) => {
+    this.contents.forEach((obj, index) => {
       let color: any = this.getColorValidation(index)
       labels.push(obj.content)
       bgColors.push(color.bgColor)
@@ -171,35 +173,32 @@ export default class CreateBestDay extends Vue {
   }
   tapResouce (tableIndex:number, resource: number) {
     console.log('tapResouce', tableIndex, resource)
-    this.timeDataList = this.timeDataList.filter( (obj, index) => {
+    this.contents = this.contents.filter( (obj, index) => {
       if (index == tableIndex) { obj.resource = resource }
       return obj
     })
   }
   tapDelete (tableIndex:number) {
-    let deleteData = this.timeDataList[tableIndex]
-    this.timeDataList = this.timeDataList.filter(obj => obj !== deleteData)
+    let deleteData = this.contents[tableIndex]
+    this.contents = this.contents.filter(obj => obj !== deleteData)
   }
   async tapShare () {
-
-    // let result = await this.user.createBestDay()
-    
+    /*
+    // await this.user.setBestDay()
+    let result = await this.user.getBestDay()
+    let id = result[0]
+    let bestDay = new BestDay(this.user.uid, new Date(), new Date(), id)
+    bestDay.setContents(this.contents)
+    console.log(this.contents)
+    await bestDay.setBestDay()
+    let best = await bestDay.getBestDay()
+    console.log('tapShare', result, best)
+    */
     let message: string = "テストツイート"
     let canvas = await html2canvas(this.$refs.timaChart)
-    let controller = new firebaseController()
+    let controller = new firebaseController(this.user)
     let Blob = this.util.toBlob(canvas.toDataURL('image/png'))
-    controller.shareMyBestDay(message, Blob)
-    /*
-    html2canvas(this.$refs.timaChart)
-      .then((canvas) => {
-        let controller = new firebaseController()
-        let Blob = this.util.toBlob(canvas.toDataURL('image/png'))
-        controller.shareMyBestDay(message, Blob)
-      }).catch((error) => {
-        console.error(error)
-      })
-    */
-    
+    controller.shareBestDay(message, this.contents, Blob)
   }
   /*
   tapDownload () {
