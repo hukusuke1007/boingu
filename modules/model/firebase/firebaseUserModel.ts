@@ -6,6 +6,7 @@ export default class userModel extends baseModel {
     displayName:string = ''
     email: string = ''
     description: string = ''
+    iconUrl: string = ""
     isDelete: boolean = false
     isLoad: boolean = false
     bestDays: Array<string> = []  // ドキュメント参照配列
@@ -23,10 +24,9 @@ export default class userModel extends baseModel {
                     this.isLoad = true
                     this.frStore.collection('user').doc(auth.uid).get()
                       .then((ref) => {
-                        let refUser = ref.data()
-                        this.setData(refUser.uid, refUser.createDate, refUser.updateDate, 
-                                    refUser.username, refUser.displayName,
-                                    refUser.email, refUser.description)
+                        let data = ref.data()
+                        data.iconUrl = auth.providerData[0].photoURL
+                        this.setData(data)
                         this.isLoad = false
                         resolve(result)
                     }).catch((error) => {
@@ -44,9 +44,18 @@ export default class userModel extends baseModel {
         try {
             let provider: any = new firebase.auth.TwitterAuthProvider()
             let auth = await firebase.auth().signInWithPopup(provider)
-            this.setData(auth.user.uid, new Date(), new Date(), 
-                auth.additionalUserInfo.username, auth.user.displayName,
-                auth.user.email, auth.additionalUserInfo.profile.description)
+            console.log('login', auth)
+            let data = {
+                uid: auth.user.uid,
+                createDate: new Date(),
+                updateDate: new Date(),
+                username: auth.additionalUserInfo.username,
+                displayName: auth.user.displayName,
+                email: auth.user.email,
+                description: auth.additionalUserInfo.profile.description,
+                iconUrl: auth.additionalUserInfo.profile.photoURL
+            }
+            this.setData(data)
             return auth
         } catch (error) {
             throw error
@@ -93,19 +102,21 @@ export default class userModel extends baseModel {
             displayName: this.displayName,
             email: this.email,
             description: this.description,
+            iconUrl: this.iconUrl,
             createDate: this.createDate,
             updateDate: this.updateDate,
             isDelete: this.isDelete
         }
     }
 
-    private setData(uid: string, createDate: Date, updateDate: Date, username:string, displayName: string, email: string, description:string) {
-        this.uid = uid
-        this.createDate = createDate
-        this.updateDate = updateDate
-        this.username = username
-        this.displayName = displayName
-        this.email = email
-        this.description = description
+    private setData(data: any) {
+        this.uid = data.uid
+        this.createDate = data.createDate
+        this.updateDate = data.updateDate
+        this.username = data.username
+        this.displayName = data.displayName
+        this.email = data.email
+        this.description = data.description
+        this.iconUrl = data.iconUrl
     }
 }

@@ -1,6 +1,5 @@
 <template>
     <v-flex>
-      ダッシュボード
       <div class="body">
         <Account />
       </div>
