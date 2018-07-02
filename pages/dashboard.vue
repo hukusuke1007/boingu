@@ -16,8 +16,8 @@ import {
 } from 'nuxt-property-decorator'
 import { State, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
-import Account from '~/components/Account.vue'
-import CreateBestDay from '~/components/CreateBestDay.vue'
+import Account from '~/components/containers/Account.vue'
+import CreateBestDay from '~/components/containers/CreateBestDay.vue'
 
 const FirebaseModule = namespace(firebaseStore.name)
 

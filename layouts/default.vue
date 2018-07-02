@@ -56,11 +56,13 @@ const FirebaseModule = namespace(firebaseStore.name)
     },
     user (newVal, oldVal) {
       console.log('default watch', newVal, oldVal)
+      /*
       if (newVal === undefined) {
         this.$router.push( {name: 'index'} )
       } else {
         this.$router.push( {name: 'dashboard'} )
       }
+      */
     }
   }
 })

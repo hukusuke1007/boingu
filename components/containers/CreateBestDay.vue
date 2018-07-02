@@ -56,7 +56,7 @@ import {
 import { State, Action, namespace } from 'vuex-class'
 import html2canvas from 'html2canvas'
 
-import TimeDataChart from '~/components/TimeDataChart.vue'
+import TimeDataChart from '~/components/charts/TimeDataChart.vue'
 import utility from '~/modules/utils/utility'
 
 import * as firebaseStore from '~/store/firebase'

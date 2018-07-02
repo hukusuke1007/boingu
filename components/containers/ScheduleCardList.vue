@@ -1,12 +1,14 @@
 <template>
-  <v-flex>
-    <v-flex xs12 sm6 offset-sm3>
-      <TopLogin/>
-    </v-flex>
-    <v-flex>
-      <ScheduleCardList />
-    </v-flex>
-  </v-flex>
+    <v-card>
+        <v-container fluid grid-list-md class="schedule">
+        <v-layout row wrap>
+            <div class="card-flex"><TopScheduleCard/></div>
+            <div class="card-flex"><TopScheduleCard/></div>
+            <div class="card-flex"><TopScheduleCard/></div>
+            <div class="card-flex"><TopScheduleCard/></div>
+        </v-layout>
+        </v-container>
+    </v-card>
 </template>
 
 <script lang="ts">
@@ -16,15 +18,13 @@ import {
 } from 'nuxt-property-decorator'
 import { State, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
-import TopLogin from "~/components/containers/TopLogin.vue"
-import ScheduleCardList from "~/components/containers/ScheduleCardList.vue"
+import TopScheduleCard from "~/components/cards/TopScheduleCard.vue"
 
 const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
   components: {
-    TopLogin,
-    ScheduleCardList
+    TopScheduleCard
   },
   watch: {
     user (newVal, oldVal) {
@@ -37,7 +37,7 @@ const FirebaseModule = namespace(firebaseStore.name)
     }
   }
 })
-export default class index extends Vue {
+export default class ScheduleCardList extends Vue {
   // ■ Vuex
   @FirebaseModule.State user
 
