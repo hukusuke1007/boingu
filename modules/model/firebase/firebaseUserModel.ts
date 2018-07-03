@@ -6,7 +6,7 @@ export default class userModel extends baseModel {
     displayName:string = ''
     email: string = ''
     description: string = ''
-    iconUrl: string = ""
+    iconUrl: string = ''
     isDelete: boolean = false
     isLoad: boolean = false
     bestDays: Array<string> = []  // ドキュメント参照配列

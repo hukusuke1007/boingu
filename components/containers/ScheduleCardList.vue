@@ -59,8 +59,8 @@ export default class ScheduleCardList extends Vue {
 .card-flex {
   margin: auto;
   // margin-left: 2px;
-  width: 280px;
-  height: 280px;
+  width: 260px;
+  height: 220px;
 }
 
 </style>

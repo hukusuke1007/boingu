@@ -1,6 +1,6 @@
 <template>
     <v-card class="card-action">
-        <v-card-media :src="src" height="200px">
+        <v-card-media :src="src" height="160px">
             <v-flex xs12 align-end flexbox>
                 <span class="headline white--text" v-text="title"></span>
             </v-flex>
