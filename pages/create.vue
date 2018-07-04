@@ -1,7 +1,7 @@
 <template>
     <v-flex>
       <div class="body">
-        <Account />
+        <CreateBestDay />
       </div>
     </v-flex>
 </template>
@@ -13,13 +13,13 @@ import {
 } from 'nuxt-property-decorator'
 import { State, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
-import Account from '~/components/containers/Account.vue'
+import CreateBestDay from '~/components/containers/CreateBestDay.vue'
 
 const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
   components: {
-    Account
+    CreateBestDay
   },
   watch: {
     isLoadFirebase (newVal: boolean, oldVal: boolean) {
@@ -27,7 +27,7 @@ const FirebaseModule = namespace(firebaseStore.name)
     }
   }
 })
-export default class dashboard extends Vue {
+export default class create extends Vue {
   // ■ Vuex
   @FirebaseModule.State('isLoad') isLoadFirebase
   // @FirebaseState('isLoad') isLoadFirebase

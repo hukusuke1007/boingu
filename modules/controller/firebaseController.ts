@@ -21,16 +21,17 @@ export class firebaseController {
         let util = new utility()
         let filenamePath = 'images/' + 'boingu' + '_' + util.getUniqueString() + "_" + util.getDateStringLabel(new Date) + ".png"
         try {
-            // database
-            let id = await this.user.setBestDayReference()
-            let bestDay = new BestDay(this.user.uid, new Date(), new Date(), id)
-            bestDay.setContents(contents)
-            bestDay.setBestDay()
-
             // storage
             let storage = new StorageModel(filenamePath, file)
-            let stResult = await storage.upload()
+            let imageUrl = await storage.upload()
             let result = await this.shareMediaToSNS(message, filenamePath)
+
+            // database
+            let id = await this.user.saveBestDayReference()
+            let bestDay = new BestDay(this.user.uid, new Date(), new Date(), id)
+            bestDay.imageUrl = imageUrl
+            bestDay.setContents(contents)
+            bestDay.saveBestDay()
             return result
         } catch (error) {
             throw error

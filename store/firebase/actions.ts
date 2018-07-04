@@ -55,7 +55,7 @@ export const actions: ActionTree<FirebaseState, RootState> = {
           console.log('login', user)
           // try情報も取得する.
           dispatch('doTryList')
-          user.setUser()
+          user.saveUser()
             .then(() => {
               commit('setLoad', false)
               console.log('setUser OK')

@@ -27,7 +27,7 @@ const FirebaseModule = namespace(firebaseStore.name)
     }
   }
 })
-export default class dashboard extends Vue {
+export default class account extends Vue {
   // ■ Vuex
   @FirebaseModule.State('isLoad') isLoadFirebase
   // @FirebaseState('isLoad') isLoadFirebase

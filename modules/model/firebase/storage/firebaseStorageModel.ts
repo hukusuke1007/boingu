@@ -18,8 +18,10 @@ export default class storageModel {
         try {
             let path = this.filenamePath
             let mountainsRef = this.frStorage.ref().child(path)
-            let result = await mountainsRef.put(this.file)
-            return result
+            await mountainsRef.put(this.file)
+            let url = await mountainsRef.getDownloadURL()
+            console.log('storage upload', url)
+            return url
         } catch (error) {
             throw error
         }

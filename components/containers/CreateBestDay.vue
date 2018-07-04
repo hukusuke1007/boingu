@@ -1,5 +1,10 @@
 <template>
 <div class="body">
+  <v-flex class="timeChartBody" ref="timaChart">
+    <TimeDataChart 
+       v-bind:chartData="chartData"
+        />
+  </v-flex>
   <v-flex  style="margin-top: 8px;">
     <v-btn round large color="twitter white--text" class="shareBtn" @click="tapShare()">ツイートする</v-btn>
   </v-flex >
@@ -39,11 +44,6 @@
     <div class="descriptionBody" v-if="contents.length===0">
       <!-- 今日もお疲れ様でした！<br>今日の自分を記録してみませんか？ -->
     </div>
-  </v-flex>
-  <v-flex class="timeChartBody" ref="timaChart">
-    <TimeDataChart 
-       v-bind:chartData="chartData"
-        />
   </v-flex>
 </div>
 </template>
@@ -440,9 +440,9 @@ $table-header-border: 1px solid #FFF;
   margin: auto;
 
   // breakpoint以上.
-  @media (min-width: 600px) {
-    width: 600px;
-    height: 600px;
+  @media (min-width: 400px) {
+    width: 400px;
+    height: 400px;
   }
   // breakpoint未満
   @media (max-width: 340px) {

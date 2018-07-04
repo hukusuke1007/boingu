@@ -22,7 +22,7 @@
      </v-toolbar-side-icon>
      <v-toolbar-side-icon>
        <!-- <router-link :to="{ name: 'dashboard', params: { kind: 'show_only' } }" class="routerLink"> -->
-       <router-link to="/dashboard" class="routerLink">
+       <router-link to="/create" class="routerLink">
         <v-icon>receipt</v-icon>
        </router-link>
     </v-toolbar-side-icon>

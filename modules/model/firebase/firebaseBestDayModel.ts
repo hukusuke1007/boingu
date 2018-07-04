@@ -4,6 +4,7 @@ import BestDayContent from './firebaseBestDayContentModel'
 export default class bestDayModel extends baseModel {
     isDelete: boolean = false
     isLoad: boolean = false
+    imageUrl: string = ''
     contents :Array<any> = []
 
     constructor(uid: string, createDate: Date, updateDate: Date, id: string) {
@@ -11,7 +12,7 @@ export default class bestDayModel extends baseModel {
         this.id = id
     }
 
-    async setBestDay () {
+    async saveBestDay () {
         try {
             let result = await this.frStore.collection('bestDay').doc(this.id).set(this.toJSON())
             return result
@@ -43,6 +44,7 @@ export default class bestDayModel extends baseModel {
             createDate: this.createDate,
             updateDate: this.updateDate,
             isDelete: this.isDelete,
+            imageUrl: this.imageUrl,
             contents: this.contents
         }
     }
@@ -53,6 +55,7 @@ export default class bestDayModel extends baseModel {
         this.createDate = data.createDate
         this.updateDate = data.updateDate
         this.isDelete = data.isDelete
+        this.imageUrl = data.imageUrl
         this.contents = data.contents
     }
 }

@@ -73,7 +73,7 @@ export default class userModel extends baseModel {
         }
     }
 
-    async setUser () {
+    async saveUser () {
         try {
             console.log('setUser', this.toJSON())
             let result = await this.frStore.collection('user').doc(this.uid).set(this.toJSON())
@@ -83,7 +83,7 @@ export default class userModel extends baseModel {
         }
     }
 
-    async setBestDayReference () {
+    async saveBestDayReference () {
         try {
             let collection = this.frStore.collection('user').doc(this.uid).collection('bestDay').doc()
             await collection.set({[collection.id]: true})

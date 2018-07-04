@@ -21,7 +21,7 @@ class shareController {
                 let twitter = new twitterModel_1.default();
                 let downloadFile = yield storage.downloadFile();
                 result = yield twitter.tweetWithMedia(message, downloadFile);
-                result = yield storage.deleteFile();
+                // result = await storage.deleteFile() // 削除しない.
             }
             catch (error) {
                 return Promise.reject(error);

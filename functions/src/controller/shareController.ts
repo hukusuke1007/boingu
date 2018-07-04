@@ -12,7 +12,7 @@ export default class shareController {
             let twitter = new twitterModel()
             let downloadFile = await storage.downloadFile()
             result = await twitter.tweetWithMedia(message, downloadFile)
-            result = await storage.deleteFile()
+            // result = await storage.deleteFile() // 削除しない.
         } catch (error) {
             return Promise.reject(error)
         }
