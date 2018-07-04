@@ -52,7 +52,7 @@ export const actions: ActionTree<FirebaseState, RootState> = {
       let user = getters.user
       user.login(type)
         .then((result) => {
-          console.log('login', result)
+          console.log('login', user)
           // try情報も取得する.
           dispatch('doTryList')
           user.setUser()

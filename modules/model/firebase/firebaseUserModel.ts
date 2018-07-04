@@ -5,10 +5,11 @@ export default class userModel extends baseModel {
     username: string = ''
     displayName:string = ''
     email: string = ''
+    location: string = ''
     description: string = ''
     iconUrl: string = ''
     isDelete: boolean = false
-    isLoad: boolean = false
+    isLogin?: boolean = undefined
     bestDays: Array<string> = []  // ドキュメント参照配列
 
     constructor(uid: string, createDate: Date, updateDate: Date) {
@@ -21,19 +22,18 @@ export default class userModel extends baseModel {
             firebase.auth().onAuthStateChanged((auth) => {
                 console.log('onAuthStateChanged', auth)
                 if (auth != null) {
-                    this.isLoad = true
+                    this.isLogin = true
                     this.frStore.collection('user').doc(auth.uid).get()
                       .then((ref) => {
                         let data = ref.data()
-                        data.iconUrl = auth.providerData[0].photoURL
                         this.setData(data)
-                        this.isLoad = false
                         resolve(result)
                     }).catch((error) => {
                         console.error(error)
-                        this.isLoad = false
                         reject(error)
                     })
+                } else {
+                    this.init()
                 }
             })
         })
@@ -52,8 +52,9 @@ export default class userModel extends baseModel {
                 username: auth.additionalUserInfo.username,
                 displayName: auth.user.displayName,
                 email: auth.user.email,
+                location: auth.additionalUserInfo.profile.location,
                 description: auth.additionalUserInfo.profile.description,
-                iconUrl: auth.additionalUserInfo.profile.photoURL
+                iconUrl: auth.additionalUserInfo.profile.profile_image_url_https
             }
             this.setData(data)
             return auth
@@ -62,8 +63,19 @@ export default class userModel extends baseModel {
         }
     }
 
+    async logout () {
+        try {
+            let auth = await firebase.auth().signOut()
+            console.log(auth)
+            return auth
+        } catch (error) {
+            throw error
+        }
+    }
+
     async setUser () {
         try {
+            console.log('setUser', this.toJSON())
             let result = await this.frStore.collection('user').doc(this.uid).set(this.toJSON())
             return result
         } catch (error) {
@@ -101,12 +113,27 @@ export default class userModel extends baseModel {
             username: this.username,
             displayName: this.displayName,
             email: this.email,
+            location: this.location,
             description: this.description,
             iconUrl: this.iconUrl,
             createDate: this.createDate,
             updateDate: this.updateDate,
             isDelete: this.isDelete
         }
+    }
+
+    private init() {
+        this.uid = ''
+        this.createDate = null
+        this.updateDate = null
+        this.username = ''
+        this.displayName = ''
+        this.email = ''
+        this.location = ''
+        this.description = ''
+        this.iconUrl = ''
+        this.bestDays = []
+        this.isLogin = false
     }
 
     private setData(data: any) {
@@ -116,6 +143,7 @@ export default class userModel extends baseModel {
         this.username = data.username
         this.displayName = data.displayName
         this.email = data.email
+        this.location = data.location
         this.description = data.description
         this.iconUrl = data.iconUrl
     }

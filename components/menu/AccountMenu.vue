@@ -40,8 +40,7 @@ import {
 import { State, Getter, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
 
-const FirebaseState = namespace(firebaseStore.name, State)
-const FirebaseAction = namespace(firebaseStore.name, Action)
+const FirebaseModule = namespace(firebaseStore.name)
 
 @Component({
   components: {
@@ -51,7 +50,7 @@ const FirebaseAction = namespace(firebaseStore.name, Action)
 })
 export default class AccountMenu extends Vue {
   // @Prop()
-  title: string = 'Boingu'
+  @FirebaseModule.State user
   items: Array<any> = [
     {
       action: 'person_outline',
@@ -60,7 +59,6 @@ export default class AccountMenu extends Vue {
       url: 'dashboard'
     }
   ]
-  @FirebaseState('user') user
 
   created () {
   }
@@ -71,8 +69,10 @@ export default class AccountMenu extends Vue {
       this.$router.push(item.url)
     }
   }
-  tapLogout() {
+  async tapLogout() {
     console.log('ログアウト')
+    this.user.logout()
+    this.$router.push('/')
   }
 }
 </script>

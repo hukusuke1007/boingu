@@ -4,7 +4,7 @@
     <div class="subtitle-label black-boingu">
       今日、がんばった自分を<br>褒めてもらおう！
     </div>
-    <div style="margin-top: 8px;">
+    <div style="margin-top: 8px;" v-if="user.isLogin===false">
       <v-btn round large color="twitter white--text" @click="tapLogin('twitter')">Twitterでログイン</v-btn>
     </div>
   </div>
