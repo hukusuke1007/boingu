@@ -8,13 +8,23 @@ import Content from '~/modules/model/firebase/firebaseBestDayContentModel'
 import Try from '~/modules/model/firebase/firebaseTryModel'
 import BestDayContent from '~/modules/model/firebase/firebaseBestDayContentModel'
 
-export class firebaseController {
+export default class firebaseController {
 
     REST_API: string = process.env.FIREBASE_FUNCTIONS_REST_API
     user: User = undefined
+    frStore: firebase.firestore.Firestore = firebase.firestore()
 
-    constructor (user: User) {
-        this.user = user
+    constructor () {
+    }
+
+    async getBestDayList () {
+        try {
+            let snapshot = await this.frStore.collection('bestDay').get()
+            console.log('getBestDayList', snapshot.docs)
+            return snapshot.docs
+        } catch (error) {
+            throw error
+        }
     }
 
     async shareBestDay (message: string, contents: Array<BestDayContent>, file: any) {

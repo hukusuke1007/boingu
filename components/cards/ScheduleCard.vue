@@ -1,8 +1,8 @@
 <template>
-    <v-card class="card-action">
+    <v-card class="card-action" v-if="bestDay!==null">
         <v-card-media :src="src" height="160px">
             <v-flex xs12 align-end flexbox>
-                <span class="headline white--text" v-text="title"></span>
+                <span class="headline white--text" v-text="bestDay.uid"></span>
             </v-flex>
         </v-card-media>
         <v-card-actions>
@@ -21,26 +21,40 @@ import {
 } from "nuxt-property-decorator"
 import { State, Action, namespace } from 'vuex-class'
 import * as firebaseStore from '~/store/firebase'
-import User from '~/modules/model/firebase/firebaseUserModel'
+import BestDay from '~/modules/model/firebase/firebaseBestDayModel'
 
 
 @Component({
   components: {
   },
+  props: {
+      bestDay: {
+          type: BestDay,
+          default: null
+      }
+  },
   watch: {
+      'bestDay.uid' (newVal, oldVal) {
+          console.log('newVal', newVal)
+          if (newVal !== '') {
+              this.src = this.newVal.imageUrl
+          }
+      }
   }
 })
 export default class TopScheduleCards extends Vue {
   // @Prop()
   // @FirebaseModule.State user:User
-  src: string = ''
+  src: string = 'https://s3.amazonaws.com/vuetify-docs/images/cards/road.jpg'
   title: string = 'Pre-fab homes'
 
   created () {
   }
   mounted () {
-      this.src = 'https://s3.amazonaws.com/vuetify-docs/images/cards/road.jpg'
-      console.log('src', this.src)
+      console.log('bestDay', this.$props.bestDay)
+      if (this.$props.bestDay.imageUrl !== '') {
+          this.src = this.$props.bestDay.imageUrl
+      }
   }
 }
 </script>

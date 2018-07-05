@@ -65,7 +65,7 @@ import BestDay from '~/modules/model/firebase/firebaseBestDayModel'
 import Content from '~/modules/model/firebase/firebaseBestDayContentModel'
 import Try from '~/modules/model/firebase/firebaseTryModel'
 import BestDayContent from '~/modules/model/firebase/firebaseBestDayContentModel'
-import { firebaseController } from '~/modules/controller/firebaseController'
+import firebaseController from '~/modules/controller/firebaseController'
 
 const FirebaseModule = namespace(firebaseStore.name)
 
@@ -196,7 +196,8 @@ export default class CreateBestDay extends Vue {
     */
     let message: string = "テストツイート"
     let canvas = await html2canvas(this.$refs.timaChart)
-    let controller = new firebaseController(this.user)
+    let controller = new firebaseController()
+    controller.user = this.user
     let Blob = this.util.toBlob(canvas.toDataURL('image/png'))
     controller.shareBestDay(message, this.contents, Blob)
   }
